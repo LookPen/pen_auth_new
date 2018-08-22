@@ -1,0 +1,70 @@
+{% extends 'application/base.html' %}
+
+{% block content %}
+
+    {% block form_title %} <h2>添加客户端</h2>{% endblock %}
+
+    <form action="{% block action_url %}{% url 'oauth_pen:add' %} {% endblock %}">
+        <div class="form-group">
+            <label for="client_name">名称</label>
+            <input type="text" class="form-control" id="client_name" placeholder="输入客户端名称"
+                   value="{% block client_name %}{% endblock %}">
+        </div>
+
+        <div class="form-group">
+            <label for="client_type">类型</label>
+            <select id="client_type" class="form-control" value="{% block client_type %}{% endblock %}">
+                <option >confidential</option>
+                <option>public</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="authorization_grant_type">授权方式</label>
+            <select id="authorization_grant_type" class="form-control"
+                    value="{% block authorization_grant_type %}{% endblock %}">
+                <option>authorization-code</option>
+                <option>implicit</option>
+                <option>password</option>
+                <option>client-credentials</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="client_id">标识</label>
+            <input type="text" class="form-control" id="client_id" readonly
+                   value="{% block client_id %}{% endblock %}">
+        </div>
+
+        <div class="form-group">
+            <label for="client_secret">密钥</label>
+            <input type="text" class="form-control" id="client_secret" readonly
+                   value="{% block client_secret %}{% endblock %}">
+        </div>
+
+        <div class="form-group">
+            <label for="redirect_uris">回调地址</label>
+            <p class="help-block">客户端的授权类似是implicit或authorization-code时，授权回调地址是必填的！</p>
+            <textarea class="form-control" id="redirect_uris"
+                      placeholder="输入授权成功后的回调地址">{% block redirect_uris %}{% endblock %}
+            </textarea>
+
+        </div>
+
+        <div class="form-group">
+            <label for="remark">客户端说明</label>
+            <textarea class="form-control remark" id="remark"
+                      placeholder="输入客户端说明">{% block remark %}{% endblock %}</textarea>
+        </div>
+
+        <div class="checkbox">
+            <label>
+                <input id="skip_authorization" type="checkbox"
+                        {% block skip_authorization %}{% endblock %}> 跳过授权
+            </label>
+        </div>
+
+        <button type="submit" class="btn btn-default float_right ">保存</button>
+    </form>
+
+{% endblock %}

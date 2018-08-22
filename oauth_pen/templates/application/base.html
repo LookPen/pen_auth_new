@@ -1,0 +1,34 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>{% block title %}{% endblock title %}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <link rel="stylesheet" href={% static 'libs/layui/css/layui.css' %}>
+    <link rel="stylesheet" href="{% static 'css/site.css' %}">
+</head>
+
+<body>
+
+<div class="layui-carousel" id="head_car">
+    <div carousel-item>
+        <div><p class="layui-bg-green head_car">pen_auth 实在阅读oauth2.0的源码的过程中精简和修改后的版本，仅做学习使用！！</p></div>
+        <div><p class="layui-bg-black head_car">pen_auth包含了基本的oauth2.0的基础实现</p></div>
+        <div><p class="layui-bg-cyan head_car">pen_auth整合了常见的第三方登陆</p></div>
+    </div>
+</div>
+
+{% block content %}
+
+{% endblock %}
+
+
+<script src={% static 'libs/layui/layui.js' %}></script>
+<script src={% static 'js/init.js' %}></script>
+
+</body>
+</html>

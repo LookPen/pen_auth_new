@@ -1,0 +1,9 @@
+body {
+    margin: 0;
+}
+
+.head_car {
+    height: 200px;
+    line-height: 200px;
+    text-align: center;
+}
