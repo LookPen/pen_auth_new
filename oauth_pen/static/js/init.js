@@ -45,6 +45,7 @@ layui.use(['layer', 'table', 'carousel'], function () {
         else if (layEvent === 'del') {
             layer.confirm('删除该客户端后,该客户端产生的token相关数据将清除！', function (index) {
                 obj.del();
+
                 layer.close(index);
             });
         } else if (layEvent === 'edit') {
