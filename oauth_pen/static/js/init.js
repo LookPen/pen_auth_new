@@ -63,9 +63,9 @@ function bind_app_list_tool(layer, table, form) {
             });
         }
         else if (layEvent === 'edit') {
-            app_detail(layer, form, true)
+            layer_index = app_detail(layer, form, true)
             app_valid_form(form)
-            app_update(layer, form)
+            app_update(layer, form, table, layer_index)
         }
     });
 }
@@ -87,7 +87,7 @@ function app_detail(layer, form, show_save) {
         })
     }, 'json');
 
-    layer.open({
+    layer_index = layer.open({
         type: 1,
         title: '客户端详情',
         area: ['680px', '400px'],
@@ -102,10 +102,12 @@ function app_detail(layer, form, show_save) {
     else {
         $('#save_app').addClass('layui-hide')
     }
+
+    return layer_index
 }
 
 //弹窗编辑客户端
-function app_update(layer, form) {
+function app_update(layer, form, table, layer_index) {
 
     form.on('submit(save_app)', function (data) {
 
@@ -116,6 +118,8 @@ function app_update(layer, form) {
             dataType: 'json',
             success: function (data) {
                 layer.msg('保存成功')
+                layer.close(layer_index)
+                bind_app_list(table)
             },
             error: function (er) {
                 if (er.status != 500)
@@ -133,7 +137,7 @@ function app_update(layer, form) {
 function app_valid_form(form) {
     form.verify({
         client_name: function (value) {
-            if (value.length < 0) {
+            if (value.length <= 0) {
                 return '客户端名称不能为空';
             }
         }
