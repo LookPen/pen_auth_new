@@ -1,12 +1,24 @@
-layui.use(['layer', 'table', 'carousel'], function () {
+layui.use(['layer', 'table', 'carousel', 'form'], function () {
 
     var layer = layui.layer//弹层
     var table = layui.table//表格
     var carousel = layui.carousel//轮播
+    var form = layui.form//表单
 
+    //首页加载
+    say_hi(layer, carousel);
+
+    //绑定客户端列表
+    bind_app_list(table)
+
+    //监听客户端列表数据工具条
+    bind_app_list_tool(layer, table, form)
+
+})
+
+//首页加载
+function say_hi(layer, carousel) {
     layer.msg('欢迎使用 pen_auth');
-
-    //轮播
     carousel.render({
         elem: '#head_car',
         width: '100%',
@@ -14,12 +26,14 @@ layui.use(['layer', 'table', 'carousel'], function () {
         arrow: 'none',
         anim: 'fade'
     });
+}
 
-    //客户端列表数据
+//绑定客户端列表
+function bind_app_list(table) {
     table.render({
-        elem: '#app_list',
+        elem: '#apps',
         height: 332,
-        url: '/o/api/app_list',
+        url: '/o/api/app',
         page: true,
         cols: [[
             {field: 'client_id', title: '客户端id', width: 180, sort: true, fixed: 'left'},
@@ -30,26 +44,98 @@ layui.use(['layer', 'table', 'carousel'], function () {
             {fixed: 'right', width: 165, align: 'center', toolbar: '#app_action'}
         ]]
     });
+}
 
-    //监听客户端列表数据工具条
+//监听客户端列表数据工具条
+function bind_app_list_tool(layer, table, form) {
     table.on('tool(applications)', function (obj) {
         var $ = layui.$
-
-        var data = obj.data
         var layEvent = obj.event;
         var layID = $(this).attr('lay-id')
 
         if (layEvent === 'detail') {
-            layer.msg(layID)
+            app_detail(layer, form, false)
         }
         else if (layEvent === 'del') {
             layer.confirm('删除该客户端后,该客户端产生的token相关数据将清除！', function (index) {
                 obj.del();
-
                 layer.close(index);
             });
-        } else if (layEvent === 'edit') {
-            layer.msg('编辑操作');
+        }
+        else if (layEvent === 'edit') {
+            app_detail(layer, form, true)
+            app_valid_form(form)
+            app_update(layer, form)
         }
     });
-})
+}
+
+//弹窗显示客户端详情
+function app_detail(layer, form, show_save) {
+    $ = layui.$
+
+    $.get('/o/api/app', {'client_id': 1}, function (data, status) {
+        form.val('app_info', {
+            "client_name": data.client_name,
+            "client_id": data.client_id,
+            "client_secret": data.client_secret,
+            "client_type": data.client_type,
+            "authorization_grant_type": data.authorization_grant_type,
+            "skip_authorization": data.skip_authorization,
+            "redirect_uris": data.redirect_uris,
+            "remark": data.remark
+        })
+    }, 'json');
+
+    layer.open({
+        type: 1,
+        title: '客户端详情',
+        area: ['680px', '400px'],
+        content: $('#app_detail')
+    });
+
+    $('#app_detail').removeClass('layui-hide')
+
+    if (show_save) {
+        $('#save_app').removeClass('layui-hide')
+    }
+    else {
+        $('#save_app').addClass('layui-hide')
+    }
+}
+
+//弹窗编辑客户端
+function app_update(layer, form) {
+
+    form.on('submit(save_app)', function (data) {
+
+        $.ajax({
+            url: "/o/api/app",
+            data: data.field,
+            type: "POST",
+            dataType: 'json',
+            success: function (data) {
+                layer.msg('保存成功')
+            },
+            error: function (er) {
+                if (er.status != 500)
+                    layer.msg(er.responseText)
+                else
+                    layer.msg('系统错误')
+            }
+        });
+
+        return false;
+    });
+}
+
+//验证客户端表单
+function app_valid_form(form) {
+    form.verify({
+        client_name: function (value) {
+            if (value.length < 0) {
+                return '客户端名称不能为空';
+            }
+        }
+    });
+}

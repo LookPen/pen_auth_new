@@ -1,7 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="a37c8b1d-87a0-44ff-b539-afd63c4dc0ef" name="默认" comment="" />
+    <list default="true" id="a37c8b1d-87a0-44ff-b539-afd63c4dc0ef" name="默认" comment="">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/oauth_pen/templates/application/application.html" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/oauth_pen/templates/application/application_add.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/oauth_pen/templates/application/application_detail.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/oauth_pen/templates/application/application_form.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/oauth_pen/templates/application/application_form1.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/oauth_pen/templates/application/applications.html" afterPath="" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/db.sqlite3" afterPath="$PROJECT_DIR$/db.sqlite3" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/oauth_pen/static/js/init.js" afterPath="$PROJECT_DIR$/oauth_pen/static/js/init.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/oauth_pen/templates/application/base.html" afterPath="$PROJECT_DIR$/oauth_pen/templates/application/base.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/oauth_pen/urls.py" afterPath="$PROJECT_DIR$/oauth_pen/urls.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/oauth_pen/views/application.py" afterPath="$PROJECT_DIR$/oauth_pen/views/application.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/pen_auth/settings.py" afterPath="$PROJECT_DIR$/pen_auth/settings.py" />
+    </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -21,42 +35,39 @@
       <file leaf-file-name="init.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/oauth_pen/static/js/init.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="247">
-              <caret line="32" column="0" lean-forward="true" selection-start-line="32" selection-start-column="0" selection-end-line="32" selection-end-column="0" />
+            <state relative-caret-position="380">
+              <caret line="136" column="33" lean-forward="false" selection-start-line="136" selection-start-column="33" selection-end-line="136" selection-end-column="33" />
               <folding>
-                <element signature="e#222#344#0" expanded="false" />
-                <element signature="e#379#969#0" expanded="false" />
+                <element signature="n#!!block;n#say_hi#0" expanded="false" />
+                <element signature="n#!!block;n#bind_app_list#0" expanded="false" />
+                <element signature="e#1560#1727#0" expanded="false" />
+                <element signature="n#!!block;n#app_detail#0" expanded="false" />
+                <element signature="e#2072#2476#0" expanded="false" />
+                <element signature="e#2510#2626#0" expanded="false" />
+                <element signature="e#2932#3341#0" expanded="false" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="applications.html" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/oauth_pen/templates/application/applications.html">
+      <file leaf-file-name="application.html" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/oauth_pen/templates/application/application.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1007">
-              <caret line="53" column="92" lean-forward="false" selection-start-line="53" selection-start-column="92" selection-end-line="53" selection-end-column="92" />
+            <state relative-caret-position="285">
+              <caret line="28" column="56" lean-forward="false" selection-start-line="28" selection-start-column="45" selection-end-line="28" selection-end-column="56" />
+              <folding>
+                <element signature="e#64#704#0#HTML" expanded="false" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="models.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/oauth_pen/models.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="380">
+              <caret line="35" column="0" lean-forward="true" selection-start-line="35" selection-start-column="0" selection-end-line="35" selection-end-column="0" />
               <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="application.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/oauth_pen/views/application.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="969">
-              <caret line="80" column="0" lean-forward="false" selection-start-line="80" selection-start-column="0" selection-end-line="80" selection-end-column="0" />
-              <folding>
-                <element signature="n#!!doc" expanded="false" />
-                <element signature="e#189#200#0" expanded="true" />
-                <element signature="e#450#484#1" expanded="false" />
-                <element signature="e#684#705#1" expanded="false" />
-                <element signature="e#1030#1136#0" expanded="false" />
-                <element signature="e#1217#1783#0" expanded="false" />
-                <element signature="e#1348#1783#0" expanded="false" />
-                <element signature="e#1519#1760#0" expanded="false" />
-                <element signature="e#1813#1868#0" expanded="false" />
-              </folding>
             </state>
           </provider>
         </entry>
@@ -64,11 +75,78 @@
       <file leaf-file-name="urls.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/oauth_pen/urls.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="190">
-              <caret line="16" column="49" lean-forward="false" selection-start-line="16" selection-start-column="49" selection-end-line="16" selection-end-column="49" />
+            <state relative-caret-position="247">
+              <caret line="18" column="0" lean-forward="true" selection-start-line="18" selection-start-column="0" selection-end-line="18" selection-end-column="0" />
               <folding>
                 <element signature="n#!!doc" expanded="false" />
+                <element signature="e#133#165#0" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="application.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/oauth_pen/views/application.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="1026">
+              <caret line="135" column="0" lean-forward="true" selection-start-line="135" selection-start-column="0" selection-end-line="135" selection-end-column="0" />
+              <folding>
+                <element signature="n#!!doc" expanded="false" />
+                <element signature="e#189#200#0" expanded="true" />
+                <element signature="e#493#646#0" expanded="false" />
+                <element signature="e#493#527#1" expanded="false" />
+                <element signature="e#727#846#0" expanded="false" />
+                <element signature="e#727#748#1" expanded="false" />
+                <element signature="e#895#1179#0" expanded="false" />
+                <element signature="e#1073#1179#0" expanded="false" />
+                <element signature="e#1260#1826#0" expanded="false" />
+                <element signature="e#1391#1826#0" expanded="false" />
+                <element signature="e#1562#1803#0" expanded="false" />
+                <element signature="e#1856#1910#0" expanded="false" />
+                <element signature="e#1977#2049#1" expanded="false" />
+                <element signature="e#2632#2772#0" expanded="false" />
+                <element signature="e#2813#2885#1" expanded="false" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="query.py" pinned="false" current-in-tab="false">
+        <entry file="file://$USER_HOME$/.pyenv/versions/3.6.1/lib/python3.6/site-packages/django/db/models/query.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="217">
+              <caret line="467" column="44" lean-forward="false" selection-start-line="467" selection-start-column="40" selection-end-line="467" selection-end-column="44" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="base.py" pinned="false" current-in-tab="false">
+        <entry file="file://$USER_HOME$/.pyenv/versions/3.6.1/lib/python3.6/site-packages/django/views/generic/base.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="142">
+              <caret line="67" column="0" lean-forward="false" selection-start-line="67" selection-start-column="0" selection-end-line="67" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="base.py" pinned="false" current-in-tab="false">
+        <entry file="file://$USER_HOME$/.pyenv/versions/3.6.1/lib/python3.6/site-packages/django/core/handlers/base.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="175">
+              <caret line="197" column="0" lean-forward="false" selection-start-line="197" selection-start-column="0" selection-end-line="197" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="exception.py" pinned="false" current-in-tab="false">
+        <entry file="file://$USER_HOME$/.pyenv/versions/3.6.1/lib/python3.6/site-packages/django/core/handlers/exception.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="133">
+              <caret line="43" column="0" lean-forward="false" selection-start-line="43" selection-start-column="0" selection-end-line="43" selection-end-column="0" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -92,6 +170,9 @@
       <find>Model class django.contrib.auth.models.Permission doesn't declare an explicit app_label</find>
       <find>contrib.auth</find>
       <find>remark</find>
+      <find>LAY_demo_editor</find>
+      <find>$</find>
+      <find>app_list</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -104,24 +185,26 @@
         <option value="$PROJECT_DIR$/oauth_pen/exceptions.py" />
         <option value="$PROJECT_DIR$/oauth_pen/tests.py" />
         <option value="$PROJECT_DIR$/oauth_pen/settings.py" />
-        <option value="$PROJECT_DIR$/pen_auth/settings.py" />
         <option value="$PROJECT_DIR$/oauth_pen/static/libs/bootstrap-3.3.7-dist/css/bootstrap.css" />
         <option value="$PROJECT_DIR$/oauth_pen/templates/application_base.html" />
         <option value="$PROJECT_DIR$/oauth_pen/templates/applications.html" />
         <option value="$PROJECT_DIR$/oauth_pen/templates/application_add.html" />
         <option value="$PROJECT_DIR$/oauth_pen/templates/application.html" />
         <option value="$PROJECT_DIR$/oauth_pen/templates/application_form.html" />
-        <option value="$PROJECT_DIR$/oauth_pen/templates/application/application_form1.html" />
-        <option value="$PROJECT_DIR$/oauth_pen/templates/application/application_detail.html" />
-        <option value="$PROJECT_DIR$/oauth_pen/templates/application/application_form.html" />
         <option value="$PROJECT_DIR$/oauth_pen/models.py" />
         <option value="$PROJECT_DIR$/oauth_pen/static/init.js" />
         <option value="$PROJECT_DIR$/pen_auth/urls.py" />
         <option value="$PROJECT_DIR$/oauth_pen/static/css/site.css" />
-        <option value="$PROJECT_DIR$/oauth_pen/templates/application/base.html" />
-        <option value="$PROJECT_DIR$/oauth_pen/urls.py" />
-        <option value="$PROJECT_DIR$/oauth_pen/views/application.py" />
         <option value="$PROJECT_DIR$/oauth_pen/templates/application/applications.html" />
+        <option value="$PROJECT_DIR$/oauth_pen/templates/application/application_form1.html" />
+        <option value="$PROJECT_DIR$/oauth_pen/templates/application/application_detail.html" />
+        <option value="$PROJECT_DIR$/pen_auth/settings.py" />
+        <option value="$PROJECT_DIR$/oauth_pen/templates/application/application_form.html" />
+        <option value="$PROJECT_DIR$/oauth_pen/templates/application/application_list.html" />
+        <option value="$PROJECT_DIR$/oauth_pen/urls.py" />
+        <option value="$PROJECT_DIR$/oauth_pen/templates/application/base.html" />
+        <option value="$PROJECT_DIR$/oauth_pen/templates/application/application.html" />
+        <option value="$PROJECT_DIR$/oauth_pen/views/application.py" />
         <option value="$PROJECT_DIR$/oauth_pen/static/js/init.js" />
       </list>
     </option>
@@ -168,6 +251,35 @@
               <item name="pen_auth_new" type="b2602c69:ProjectViewProjectNode" />
               <item name="pen_auth_new" type="462c0819:PsiDirectoryNode" />
             </path>
+            <path>
+              <item name="pen_auth_new" type="b2602c69:ProjectViewProjectNode" />
+              <item name="pen_auth_new" type="462c0819:PsiDirectoryNode" />
+              <item name="oauth_pen" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="pen_auth_new" type="b2602c69:ProjectViewProjectNode" />
+              <item name="pen_auth_new" type="462c0819:PsiDirectoryNode" />
+              <item name="oauth_pen" type="462c0819:PsiDirectoryNode" />
+              <item name="templates" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="pen_auth_new" type="b2602c69:ProjectViewProjectNode" />
+              <item name="pen_auth_new" type="462c0819:PsiDirectoryNode" />
+              <item name="oauth_pen" type="462c0819:PsiDirectoryNode" />
+              <item name="templates" type="462c0819:PsiDirectoryNode" />
+              <item name="application" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="pen_auth_new" type="b2602c69:ProjectViewProjectNode" />
+              <item name="pen_auth_new" type="462c0819:PsiDirectoryNode" />
+              <item name="oauth_pen" type="462c0819:PsiDirectoryNode" />
+              <item name="views" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="pen_auth_new" type="b2602c69:ProjectViewProjectNode" />
+              <item name="pen_auth_new" type="462c0819:PsiDirectoryNode" />
+              <item name="pen_auth" type="462c0819:PsiDirectoryNode" />
+            </path>
           </expand>
           <select />
         </subPane>
@@ -182,6 +294,7 @@
     <property name="DefaultHtmlFileTemplate" value="HTML File" />
     <property name="list.type.of.created.stylesheet" value="CSS" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="SearchEverywhereHistoryKey" value="&#9;FILE&#9;file:///home/dzjx/PycharmProjects/pen_auth_new/oauth_pen/templates/application/application.html" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
@@ -293,25 +406,26 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="45" y="-4" width="1875" height="1084" extended-state="6" />
+    <editor active="true" />
     <layout>
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.30071077" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32975295" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
-      <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32975295" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.35452586" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.31000546" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.43318966" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3555317" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.59375" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.3448276" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Data View" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.433942" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
@@ -330,7 +444,7 @@
           <option name="timeStamp" value="8" />
         </line-breakpoint>
       </breakpoints>
-      <option name="time" value="45" />
+      <option name="time" value="58" />
     </breakpoint-manager>
     <watches-manager>
       <configuration name="Python.DjangoServer">
@@ -340,20 +454,13 @@
     </watches-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/oauth_pen/templates/application/applications.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="936">
-          <caret line="52" column="81" lean-forward="false" selection-start-line="52" selection-start-column="75" selection-end-line="52" selection-end-column="81" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/oauth_pen/urls.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="288">
           <caret line="16" column="49" lean-forward="false" selection-start-line="16" selection-start-column="49" selection-end-line="16" selection-end-column="49" />
           <folding>
             <element signature="n#!!doc" expanded="false" />
+            <element signature="e#133#165#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -365,13 +472,19 @@
           <folding>
             <element signature="n#!!doc" expanded="false" />
             <element signature="e#189#200#0" expanded="true" />
-            <element signature="e#450#484#1" expanded="false" />
-            <element signature="e#684#705#1" expanded="false" />
-            <element signature="e#1030#1136#0" expanded="false" />
-            <element signature="e#1217#1783#0" expanded="false" />
-            <element signature="e#1348#1783#0" expanded="false" />
-            <element signature="e#1519#1760#0" expanded="false" />
-            <element signature="e#1813#1868#0" expanded="false" />
+            <element signature="e#493#646#0" expanded="false" />
+            <element signature="e#493#527#1" expanded="false" />
+            <element signature="e#727#846#0" expanded="false" />
+            <element signature="e#727#748#1" expanded="false" />
+            <element signature="e#895#1179#0" expanded="false" />
+            <element signature="e#1073#1179#0" expanded="false" />
+            <element signature="e#1260#1826#0" expanded="false" />
+            <element signature="e#1391#1826#0" expanded="false" />
+            <element signature="e#1562#1803#0" expanded="false" />
+            <element signature="e#1856#1910#0" expanded="false" />
+            <element signature="e#1977#2049#1" expanded="false" />
+            <element signature="e#2632#2772#0" expanded="false" />
+            <element signature="e#2813#2885#1" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -403,6 +516,7 @@
           <caret line="20" column="0" lean-forward="true" selection-start-line="20" selection-start-column="0" selection-end-line="20" selection-end-column="0" />
           <folding>
             <element signature="n#!!doc" expanded="false" />
+            <element signature="e#133#165#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -521,13 +635,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$USER_HOME$/.pyenv/versions/3.6.1/lib/python3.6/site-packages/django/utils/deprecation.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="403">
-          <caret line="140" column="0" lean-forward="false" selection-start-line="140" selection-start-column="0" selection-end-line="140" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/oauth_pen/static/libs/bootstrap-3.3.7-dist/css/bootstrap.css" />
     <entry file="file://$USER_HOME$/.pyenv/versions/3.6.1/lib/python3.6/site-packages/django/contrib/admin/static/admin/css/base.css">
       <provider selected="true" editor-type-id="text-editor">
@@ -536,32 +643,11 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/oauth_pen/templates/application/application_add.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="1" selection-end-column="62" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$USER_HOME$/.pyenv/versions/3.6.1/lib/python3.6/site-packages/flower/static/css/bootstrap.css" />
-    <entry file="file://$PROJECT_DIR$/oauth_pen/templates/application/application_form1.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="301">
-          <caret line="59" column="30" lean-forward="true" selection-start-line="59" selection-start-column="30" selection-end-line="59" selection-end-column="30" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$USER_HOME$/.pyenv/versions/3.6.1/lib/python3.6/site-packages/django/forms/models.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="248">
           <caret line="313" column="0" lean-forward="false" selection-start-line="313" selection-start-column="0" selection-end-line="313" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/.pyenv/versions/3.6.1/lib/python3.6/site-packages/django/core/handlers/exception.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="266">
-          <caret line="45" column="0" lean-forward="true" selection-start-line="45" selection-start-column="0" selection-end-line="45" selection-end-column="0" />
         </state>
       </provider>
     </entry>
@@ -579,20 +665,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/oauth_pen/templates/application/application_detail.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="95">
-          <caret line="7" column="31" lean-forward="false" selection-start-line="7" selection-start-column="31" selection-end-line="7" selection-end-column="31" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/oauth_pen/templates/application/application_form.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="418">
-          <caret line="22" column="22" lean-forward="false" selection-start-line="22" selection-start-column="22" selection-end-line="22" selection-end-column="22" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$USER_HOME$/.pyenv/versions/3.6.1/lib/python3.6/site-packages/django/utils/module_loading.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="532">
@@ -604,21 +676,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="212">
           <caret line="109" column="42" lean-forward="false" selection-start-line="109" selection-start-column="42" selection-end-line="109" selection-end-column="42" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/oauth_pen/settings.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="152">
-          <caret line="16" column="22" lean-forward="false" selection-start-line="16" selection-start-column="5" selection-end-line="16" selection-end-column="22" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pen_auth/settings.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2213">
-          <caret line="122" column="51" lean-forward="false" selection-start-line="122" selection-start-column="42" selection-end-line="122" selection-end-column="51" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -636,77 +693,169 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$USER_HOME$/.pyenv/versions/3.6.1/lib/python3.6/site-packages/django/core/handlers/base.py">
+    <entry file="file://$PROJECT_DIR$/oauth_pen/templates/application/application_form.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="156">
-          <caret line="184" column="0" lean-forward="false" selection-start-line="184" selection-start-column="0" selection-end-line="184" selection-end-column="0" />
+        <state relative-caret-position="342">
+          <caret line="18" column="0" lean-forward="true" selection-start-line="18" selection-start-column="0" selection-end-line="18" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/oauth_pen/templates/application/application_add.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="1" selection-end-column="62" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pen_auth/settings.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="206">
+          <caret line="46" column="57" lean-forward="false" selection-start-line="46" selection-start-column="57" selection-end-line="46" selection-end-column="57" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/oauth_pen/settings.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="361">
+          <caret line="22" column="1" lean-forward="true" selection-start-line="22" selection-start-column="1" selection-end-line="22" selection-end-column="1" />
+          <folding>
+            <element signature="e#518#1599#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/oauth_pen/templates/application/application_detail.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/oauth_pen/templates/application/application_form.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="456">
+          <caret line="81" column="0" lean-forward="false" selection-start-line="81" selection-start-column="0" selection-end-line="131" selection-end-column="13" />
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/oauth_pen/templates/application/base.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="311">
-          <caret line="26" column="14" lean-forward="false" selection-start-line="26" selection-start-column="14" selection-end-line="26" selection-end-column="14" />
+        <state relative-caret-position="494">
+          <caret line="26" column="0" lean-forward="true" selection-start-line="26" selection-start-column="0" selection-end-line="26" selection-end-column="0" />
+          <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$USER_HOME$/.pyenv/versions/3.6.1/lib/python3.6/site-packages/django/views/generic/base.py">
+    <entry file="file://$USER_HOME$/.pyenv/versions/3.6.1/lib/python3.6/site-packages/django/utils/deprecation.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="148">
-          <caret line="67" column="0" lean-forward="false" selection-start-line="67" selection-start-column="0" selection-end-line="67" selection-end-column="0" />
+        <state relative-caret-position="478">
+          <caret line="142" column="0" lean-forward="false" selection-start-line="142" selection-start-column="0" selection-end-line="142" selection-end-column="0" />
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/oauth_pen/models.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="418">
-          <caret line="34" column="100" lean-forward="true" selection-start-line="27" selection-start-column="3" selection-end-line="34" selection-end-column="100" />
+        <state relative-caret-position="380">
+          <caret line="35" column="0" lean-forward="true" selection-start-line="35" selection-start-column="0" selection-end-line="35" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/.pyenv/versions/3.6.1/lib/python3.6/site-packages/django/views/generic/base.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="142">
+          <caret line="67" column="0" lean-forward="false" selection-start-line="67" selection-start-column="0" selection-end-line="67" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/.pyenv/versions/3.6.1/lib/python3.6/site-packages/django/core/handlers/base.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="175">
+          <caret line="197" column="0" lean-forward="false" selection-start-line="197" selection-start-column="0" selection-end-line="197" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/.pyenv/versions/3.6.1/lib/python3.6/site-packages/django/core/handlers/exception.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="133">
+          <caret line="43" column="0" lean-forward="false" selection-start-line="43" selection-start-column="0" selection-end-line="43" selection-end-column="0" />
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/oauth_pen/urls.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="190">
-          <caret line="16" column="49" lean-forward="false" selection-start-line="16" selection-start-column="49" selection-end-line="16" selection-end-column="49" />
+        <state relative-caret-position="247">
+          <caret line="18" column="0" lean-forward="true" selection-start-line="18" selection-start-column="0" selection-end-line="18" selection-end-column="0" />
           <folding>
             <element signature="n#!!doc" expanded="false" />
+            <element signature="e#133#165#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/.pyenv/versions/3.6.1/lib/python3.6/site-packages/django/db/models/query.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="217">
+          <caret line="467" column="44" lean-forward="false" selection-start-line="467" selection-start-column="40" selection-end-line="467" selection-end-column="44" />
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/oauth_pen/views/application.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="969">
-          <caret line="80" column="0" lean-forward="false" selection-start-line="80" selection-start-column="0" selection-end-line="80" selection-end-column="0" />
+        <state relative-caret-position="1026">
+          <caret line="135" column="0" lean-forward="true" selection-start-line="135" selection-start-column="0" selection-end-line="135" selection-end-column="0" />
           <folding>
             <element signature="n#!!doc" expanded="false" />
             <element signature="e#189#200#0" expanded="true" />
-            <element signature="e#450#484#1" expanded="false" />
-            <element signature="e#684#705#1" expanded="false" />
-            <element signature="e#1030#1136#0" expanded="false" />
-            <element signature="e#1217#1783#0" expanded="false" />
-            <element signature="e#1348#1783#0" expanded="false" />
-            <element signature="e#1519#1760#0" expanded="false" />
-            <element signature="e#1813#1868#0" expanded="false" />
+            <element signature="e#493#646#0" expanded="false" />
+            <element signature="e#493#527#1" expanded="false" />
+            <element signature="e#727#846#0" expanded="false" />
+            <element signature="e#727#748#1" expanded="false" />
+            <element signature="e#895#1179#0" expanded="false" />
+            <element signature="e#1073#1179#0" expanded="false" />
+            <element signature="e#1260#1826#0" expanded="false" />
+            <element signature="e#1391#1826#0" expanded="false" />
+            <element signature="e#1562#1803#0" expanded="false" />
+            <element signature="e#1856#1910#0" expanded="false" />
+            <element signature="e#1977#2049#1" expanded="false" />
+            <element signature="e#2632#2772#0" expanded="false" />
+            <element signature="e#2813#2885#1" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/oauth_pen/templates/application/applications.html">
+    <entry file="file://$PROJECT_DIR$/oauth_pen/templates/application/application.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1007">
-          <caret line="53" column="92" lean-forward="false" selection-start-line="53" selection-start-column="92" selection-end-line="53" selection-end-column="92" />
-          <folding />
+        <state relative-caret-position="285">
+          <caret line="28" column="56" lean-forward="false" selection-start-line="28" selection-start-column="45" selection-end-line="28" selection-end-column="56" />
+          <folding>
+            <element signature="e#64#704#0#HTML" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/oauth_pen/static/js/init.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="247">
-          <caret line="32" column="0" lean-forward="true" selection-start-line="32" selection-start-column="0" selection-end-line="32" selection-end-column="0" />
+        <state relative-caret-position="380">
+          <caret line="136" column="33" lean-forward="false" selection-start-line="136" selection-start-column="33" selection-end-line="136" selection-end-column="33" />
           <folding>
-            <element signature="e#222#344#0" expanded="false" />
-            <element signature="e#379#969#0" expanded="false" />
+            <element signature="n#!!block;n#say_hi#0" expanded="false" />
+            <element signature="n#!!block;n#bind_app_list#0" expanded="false" />
+            <element signature="e#1560#1727#0" expanded="false" />
+            <element signature="n#!!block;n#app_detail#0" expanded="false" />
+            <element signature="e#2072#2476#0" expanded="false" />
+            <element signature="e#2510#2626#0" expanded="false" />
+            <element signature="e#2932#3341#0" expanded="false" />
           </folding>
         </state>
       </provider>

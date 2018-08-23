@@ -8,14 +8,11 @@
 from django.conf.urls import url
 from oauth_pen.views import application
 
-# 管理页面地址
+# 管理界面
 management_urlpatterns = [
-    # url(r'^application/(?P<pk>.*)/edit$', application.ApplicationUpdate.as_view(), name='update'),
-    # url(r'^application/(?P<pk>.*)$', application.ApplicationDetail.as_view(), name='detail'),
+    url(r'^application/$', application.app_page),
 
-    url(r'^applications', application.app_page),
-    url(r'^api/app_list$', application.ApiApplication.as_view())
-
+    url(r'^api/app$', application.ApiApplication.as_view())
 ]
 
 urlpatterns = management_urlpatterns

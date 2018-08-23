@@ -1,0 +1,103 @@
+{% extends 'application/base.html' %}
+
+{% block content %}
+
+    <div id="app_list">
+        <table class="layui-hide" id="apps" lay-filter="applications"></table>
+
+        <script type="text/html" id="app_action">
+            <a class="layui-btn layui-btn-primary layui-btn-xs"
+               lay-id={% verbatim %}{{ d.client_id }}{% endverbatim %} lay-event="detail">查看</a>
+
+            <a class="layui-btn layui-btn-xs"
+               lay-id={% verbatim %}{{ d.client_id }}{% endverbatim %} lay-event="edit">编辑</a>
+
+            <a class="layui-btn layui-btn-danger  layui-btn-xs"
+               lay-id={% verbatim %}{{ d.client_id }}{% endverbatim %} lay-event="del">删除</a>
+        </script>
+    </div>
+
+    <div id="app_detail" class="layui-hide">
+
+        <hr class="layui-bg-green">
+
+        <form class="layui-form" action="" lay-filter="app_info">
+            <div class="layui-form-item">
+                <label class="layui-form-label">名称</label>
+
+                <div class="layui-input-inline">
+                    <input type="text" name="client_name" lay-verify="client_name" autocomplete="off"
+                           placeholder="请输入客户端名称" class="layui-input">
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">标识</label>
+
+                <div class="layui-input-block">
+                    <input type="text" name="client_id" autocomplete="off" readonly class="layui-input">
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">密钥</label>
+
+                <div class="layui-input-block">
+                    <input type="text" name="client_secret" autocomplete="off" class="layui-input" readonly>
+                </div>
+            </div>
+
+            <div class="layui-form-item layui-inline">
+                <label class="layui-form-label">类型</label>
+                <div class="layui-input-inline">
+                    <select name="client_type" lay-filter="client_type">
+                        <option value="confidential">私有</option>
+                        <option value="public">公用</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="layui-form-item layui-inline">
+                <label class="layui-form-label">授权方式</label>
+                <div class="layui-input-inline">
+                    <select name="authorization_grant_type" lay-filter="grant_type">
+                        <option value="authorization-code">授权码</option>
+                        <option value="implicit">简化</option>
+                        <option value="password">密码</option>
+                        <option value="client-credentials">客户端</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">跳过授权</label>
+                <div class="layui-input-block">
+                    <input type="checkbox" name="skip_authorization" lay-skin="switch" lay-text="ON|OFF">
+                </div>
+            </div>
+
+            <div class="layui-form-item layui-form-text">
+                <label class="layui-form-label">回调地址</label>
+                <div class="layui-input-block">
+                <textarea placeholder="温馨提醒：当授权模式为implicit或authorization-code 时，回调地址必填"
+                          class="layui-textarea" name="redirect_uris"></textarea>
+                </div>
+            </div>
+
+            <div class="layui-form-item layui-form-text">
+                <label class="layui-form-label">备注</label>
+                <div class="layui-input-block">
+                    <textarea placeholder="客户端说明" class="layui-textarea" name="remark"></textarea>
+                </div>
+            </div>
+
+            <div id="save_app" class="layui-form-item layui-hide">
+                <div class="layui-input-block">
+                    <button class="layui-btn" lay-submit="" lay-filter="save_app">立即提交</button>
+                </div>
+            </div>
+
+        </form>
+    </div>
+
+{% endblock %}
