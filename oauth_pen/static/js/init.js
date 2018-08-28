@@ -1,20 +1,20 @@
 layui.use(['layer', 'table', 'carousel', 'form'], function () {
 
-    var layer = layui.layer//弹层
-    var table = layui.table//表格
-    var carousel = layui.carousel//轮播
-    var form = layui.form//表单
+    var layer = layui.layer;//弹层
+    var table = layui.table;//表格
+    var carousel = layui.carousel;//轮播
+    var form = layui.form;//表单
 
     //首页加载
     say_hi(layer, carousel);
 
     //绑定客户端列表
-    bind_app_list(table)
+    bind_app_list(table);
 
     //监听客户端列表数据工具条
     bind_app_list_tool(layer, table, form)
 
-})
+});
 
 //首页加载
 function say_hi(layer, carousel) {
@@ -49,9 +49,9 @@ function bind_app_list(table) {
 //监听客户端列表数据工具条
 function bind_app_list_tool(layer, table, form) {
     table.on('tool(applications)', function (obj) {
-        var $ = layui.$
+        var $ = layui.$;
         var layEvent = obj.event;
-        var layID = $(this).attr('lay-id')
+        var layID = $(this).attr('lay-id');
 
         if (layEvent === 'detail') {
             app_detail(layer, form, false)
@@ -63,8 +63,8 @@ function bind_app_list_tool(layer, table, form) {
             });
         }
         else if (layEvent === 'edit') {
-            layer_index = app_detail(layer, form, true)
-            app_valid_form(form)
+            layer_index = app_detail(layer, form, true);
+            app_valid_form(form);
             app_update(layer, form, table, layer_index)
         }
     });
