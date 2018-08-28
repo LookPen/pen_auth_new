@@ -3,14 +3,14 @@
 {% block content %}
 
     <div id="app_list">
+
+        <a style="margin-top: 10px" id="new_app" class="layui-btn layui-btn-normal">+ 新建客户端</a>
+
         <table class="layui-hide" id="apps" lay-filter="applications"></table>
 
         <script type="text/html" id="app_action">
-            <a class="layui-btn layui-btn-primary layui-btn-xs"
-               lay-id={% verbatim %}{{ d.client_id }}{% endverbatim %} lay-event="detail">查看</a>
-
             <a class="layui-btn layui-btn-xs"
-               lay-id={% verbatim %}{{ d.client_id }}{% endverbatim %} lay-event="edit">编辑</a>
+               lay-id={% verbatim %}{{ d.client_id }}{% endverbatim %} lay-event="edit">详情</a>
 
             <a class="layui-btn layui-btn-danger  layui-btn-xs"
                lay-id={% verbatim %}{{ d.client_id }}{% endverbatim %} lay-event="del">删除</a>
@@ -35,7 +35,7 @@
                 <label class="layui-form-label">标识</label>
 
                 <div class="layui-input-block">
-                    <input type="text" name="client_id" autocomplete="off" readonly class="layui-input">
+                    <input type="text" name="client_id" autocomplete="off" disabled class="layui-input">
                 </div>
             </div>
 
@@ -43,7 +43,7 @@
                 <label class="layui-form-label">密钥</label>
 
                 <div class="layui-input-block">
-                    <input type="text" name="client_secret" autocomplete="off" class="layui-input" readonly>
+                    <input type="text" name="client_secret" autocomplete="off" class="layui-input" disabled>
                 </div>
             </div>
 
@@ -91,7 +91,7 @@
                 </div>
             </div>
 
-            <div id="save_app" class="layui-form-item layui-hide">
+            <div id="save_app" class="layui-form-item">
                 <div class="layui-input-block">
                     <button class="layui-btn" lay-submit="" lay-filter="save_app">立即提交</button>
                 </div>

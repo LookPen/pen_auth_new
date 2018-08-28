@@ -12,7 +12,8 @@ from oauth_pen.views import application
 management_urlpatterns = [
     url(r'^application/$', application.app_page),
 
-    url(r'^api/app$', application.ApiApplication.as_view())
+    url(r'^api/app$', application.ApiApplication.as_view()),
+    url(r'^api/app_list$', application.ApiApplicationList.as_view())
 ]
 
 urlpatterns = management_urlpatterns
