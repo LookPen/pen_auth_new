@@ -10,6 +10,8 @@ from django.forms import model_to_dict
 from django.http import HttpResponse, JsonResponse
 from django.views import View
 from django.shortcuts import render
+
+from oauth_pen.access.base import SuperUserRequiredMixin
 from oauth_pen.settings import oauth_pen_settings
 from oauth_pen import models
 
@@ -18,9 +20,9 @@ def app_page(request):
     return render(request, 'application/application.html')
 
 
-class BaseView(View):
+class BaseView(SuperUserRequiredMixin, View):
     def dispatch(self, request, *args, **kwargs):
-        user = self.request  # TODO 验证当前登陆的用户
+        self.login_url = 'o/admin'  # 超级管理员的登录地址
 
         return super(BaseView, self).dispatch(request, *args, **kwargs)
 

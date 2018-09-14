@@ -7,4 +7,12 @@
 
 
 class ErrorConfigException(Exception):
+    """
+    配置错误
+    """
+    pass
+
+
+class NoPermissionException(Exception):
+    """没有权限访问"""
     pass
