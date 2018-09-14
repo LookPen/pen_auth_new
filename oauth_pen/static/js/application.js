@@ -4,21 +4,15 @@ layui.use(['layer', 'table', 'carousel', 'form'], function () {
     var table = layui.table;//表格
     var carousel = layui.carousel;//轮播
     var form = layui.form;//表单
-    var $ = layui.$;//jquery
 
     //首页加载
     say_hi(layer, carousel);
-
-    //监听新建客户端按钮
-    $(document).on('click', '#new_app', function () {
-        app_detail(layer, form, 0)
-    });
 
     //绑定客户端列表
     bind_app_list(table);
 
     //监听客户端列表数据工具条
-    bind_app_list_tool(layer, table, form)
+    monitor_app_event(layer, table, form)
 
 });
 
@@ -52,22 +46,30 @@ function bind_app_list(table) {
     });
 }
 
-//弹窗绑定客户端详情
-function app_detail(layer, form, client_id) {
+//绑定客户端详情
+function bind_app_detail(layer, form, client_id) {
     $ = layui.$;
 
-    $.get('/o/api/app', {'client_id': client_id}, function (data, status) {
-        form.val('app_info', {
-            "client_name": data.client_name,
-            "client_id": data.client_id,
-            "client_secret": data.client_secret,
-            "client_type": data.client_type,
-            "authorization_grant_type": data.authorization_grant_type,
-            "skip_authorization": data.skip_authorization,
-            "redirect_uris": data.redirect_uris,
-            "remark": data.remark
-        })
-    }, 'json');
+    $.ajax({
+        type: "GET",
+        url: "/o/api/app",
+        data: {'client_id': client_id},
+        success: function (data) {
+            form.val('app_info', {
+                "client_name": data.client_name,
+                "client_id": data.client_id,
+                "client_secret": data.client_secret,
+                "client_type": data.client_type,
+                "authorization_grant_type": data.authorization_grant_type,
+                "skip_authorization": data.skip_authorization,
+                "redirect_uris": data.redirect_uris,
+                "remark": data.remark
+            })
+        },
+        error: function (er) {
+            layer.msg(er.responseText);
+        }
+    });
 
     var $detail = $('#app_detail');
 
@@ -81,28 +83,10 @@ function app_detail(layer, form, client_id) {
     $detail.removeClass('layui-hide');
 }
 
-//监听客户端列表数据工具条
-function bind_app_list_tool(layer, table, form) {
-    table.on('tool(applications)', function (obj) {
-        var $ = layui.$;
-        var layEvent = obj.event;
-        var layID = $(this).attr('lay-id');
+//监听客户端相关事件
+function monitor_app_event(layer, table, form) {
 
-        if (layEvent === 'del') {
-            layer.confirm('删除该客户端后,该客户端产生的token相关数据将清除！', function (index) {
-                obj.del();
-                layer.close(index);
-            });
-        }
-        else if (layEvent === 'edit') {
-            app_detail(layer, form, layID);
-            app_update_add(layer, form, table)
-        }
-    });
-}
-
-//弹窗添加or编辑客户端
-function app_update_add(layer, form, table) {
+    //配置表单验证
     form.verify({
         client_name: function (value) {
             if (value.length <= 0) {
@@ -111,6 +95,36 @@ function app_update_add(layer, form, table) {
         }
     });
 
+    //监听工具条事件
+    table.on('tool(applications)', function (obj) {
+        var $ = layui.$;
+        var layEvent = obj.event;
+        var layID = $(this).attr('lay-id');
+
+        if (layEvent === 'del') {
+            layer.confirm('删除该客户端后,该客户端产生的token相关数据将清除！', function (index) {
+                $.ajax({
+                    url: "/o/api/app?client_id=" + layID,
+                    type: "DELETE",
+                    dataType: 'json',
+                    success: function (data) {
+                        layer.msg('删除成功');
+                        obj.del();
+                        layer.close(index);
+                        bind_app_list(table);
+                    },
+                    error: function (er) {
+                        layer.msg(er.responseText);
+                    }
+                });
+            });
+        }
+        else if (layEvent === 'edit') {
+            bind_app_detail(layer, form, layID);
+        }
+    });
+
+    //监听表单提交事件
     form.on('submit(save_app)', function (data) {
         $.ajax({
             url: "/o/api/app",
@@ -119,18 +133,19 @@ function app_update_add(layer, form, table) {
             dataType: 'json',
             success: function (data) {
                 bind_app_list(table);
-
                 layer.msg('保存成功');
                 layer.closeAll()
             },
             error: function (er) {
-                if (er.status !== 500)
-                    layer.msg(er.responseText);
-                else
-                    layer.msg('系统错误')
+                layer.msg(er.responseText);
             }
         });
 
         return false;
+    });
+
+    //监听新建事件
+    layui.$(document).on('click', '#new_app', function () {
+        bind_app_detail(layer, form, 0)
     });
 }

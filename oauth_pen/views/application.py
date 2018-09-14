@@ -7,7 +7,7 @@
 # from braces.views import LoginRequiredMixin
 import json
 from django.forms import model_to_dict
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.views import View
 from django.shortcuts import render
 from oauth_pen.settings import oauth_pen_settings
@@ -41,12 +41,12 @@ class ApiApplicationList(BaseView):
                 'authorization_grant_type': d.get_authorization_grant_type_display(),
                 'remark': d.remark
             })
-        return HttpResponse(json.dumps({
+        return JsonResponse({
             'count': len(result),
             'code': 0,
             'msg': '',
             'data': list(result)
-        }))
+        })
 
 
 class ApiApplication(BaseView):
@@ -64,7 +64,7 @@ class ApiApplication(BaseView):
             data = oauth_pen_settings.APPLICATION_MODEL()
             data = model_to_dict(data)
 
-        return HttpResponse(json.dumps(data))
+        return JsonResponse(data)
 
     def post(self, request):
         """
@@ -104,4 +104,17 @@ class ApiApplication(BaseView):
         data.user_id = user_id
         data.save()
 
-        return HttpResponse(json.dumps(model_to_dict(data)))
+        return JsonResponse(model_to_dict(data))
+
+    def delete(self, request):
+        """
+        删除客户端
+        :param request:
+        :return:
+        """
+        client_id = self.request.GET.get('client_id', None)
+        data = oauth_pen_settings.APPLICATION_MODEL.objects.filter(client_id=client_id).first()
+        if data:
+            data.delete()
+
+        return HttpResponse()
