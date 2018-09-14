@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-# @File  : base.py
+# @File  : access.py
 # @Author: Pen
 # @Date  : 2018-09-14 10:22
 # @Desc  : 检测当前请求是否有权限

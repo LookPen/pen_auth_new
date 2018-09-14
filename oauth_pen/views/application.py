@@ -5,15 +5,14 @@
 # @Date  : 2018-08-17 15:27
 # @Desc  : application 管理页面
 # from braces.views import LoginRequiredMixin
-import json
 from django.forms import model_to_dict
 from django.http import HttpResponse, JsonResponse
-from django.views import View
 from django.shortcuts import render
+from django.views import View
 
-from oauth_pen.access.base import SuperUserRequiredMixin
-from oauth_pen.settings import oauth_pen_settings
 from oauth_pen import models
+from oauth_pen.access import SuperUserRequiredMixin
+from oauth_pen.settings import oauth_pen_settings
 
 
 def app_page(request):

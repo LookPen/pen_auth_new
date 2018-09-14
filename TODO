@@ -2,5 +2,7 @@
 超级管理员登录逻辑还未完成
 views.login.py
 super_user_backends.py
-froms.py(接着写)
+froms.py
+backends.py（接着写用户获取的逻辑/ 疑问request.session[oauth_pen_settings.SESSION_KEY] 获取到的是session的key 怎么和用户的实体对应 ）
+
 

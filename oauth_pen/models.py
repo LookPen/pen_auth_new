@@ -50,8 +50,45 @@ class ApplicationAbstract(models.Model):
         abstract = True
 
 
+class UserAbstract(models.Model):
+    """
+    用户抽象类
+    """
+
+    @property
+    def is_anonymous(self):
+        return False
+
+    @property
+    def is_authenticated(self):
+        return True
+
+    class Meta:
+        abstract = True
+
+
 class Application(ApplicationAbstract):
     """
     客户端信息
     """
     pass
+
+
+class AnonymousUser(UserAbstract):
+    """
+    匿名用户
+    """
+    def save(self, force_insert=False, force_update=False, using=None,
+             update_fields=None):
+        raise NotImplementedError('AnonymousUser 不提供保存')
+
+    def delete(self, using=None, keep_parents=False):
+        raise NotImplementedError('AnonymousUser 不提供删除')
+
+    @property
+    def is_anonymous(self):
+        return True
+
+    @property
+    def is_authenticated(self):
+        return False
