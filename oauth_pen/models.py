@@ -1,4 +1,6 @@
 from django.db import models
+
+from oauth_pen.settings import oauth_pen_settings
 from . import generators
 
 
@@ -63,6 +65,10 @@ class UserAbstract(models.Model):
     def is_authenticated(self):
         return True
 
+    @property
+    def is_super(self):
+        return False
+
     class Meta:
         abstract = True
 
@@ -78,6 +84,7 @@ class AnonymousUser(UserAbstract):
     """
     匿名用户
     """
+
     def save(self, force_insert=False, force_update=False, using=None,
              update_fields=None):
         raise NotImplementedError('AnonymousUser 不提供保存')
@@ -91,4 +98,33 @@ class AnonymousUser(UserAbstract):
 
     @property
     def is_authenticated(self):
+        return False
+
+
+class SuperUser(UserAbstract):
+    """
+    超级管理员
+    """
+
+    # 通过配置文件配置管理员帐号
+    username = oauth_pen_settings.ADMIN_NAME,
+    password = oauth_pen_settings.ADMIN_PASSWORD
+
+    def save(self, force_insert=False, force_update=False, using=None,
+             update_fields=None):
+        raise NotImplementedError('SuperUser 不提供保存')
+
+    def delete(self, using=None, keep_parents=False):
+        raise NotImplementedError('SuperUser 不提供删除')
+
+    @property
+    def is_anonymous(self):
+        return False
+
+    @property
+    def is_authenticated(self):
+        return True
+
+    @property
+    def is_super(self):
         return False

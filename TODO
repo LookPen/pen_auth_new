@@ -3,6 +3,8 @@
 views.login.py
 super_user_backends.py
 froms.py
-backends.py（接着写用户获取的逻辑/ 疑问request.session[oauth_pen_settings.SESSION_KEY] 获取到的是session的key 怎么和用户的实体对应 ）
+backends.py（接着写用户获取的逻辑）
+https://www.cnblogs.com/xiangnan/p/5136428.html 这边文章对django的自身登陆描述得非常棒
+
 
 

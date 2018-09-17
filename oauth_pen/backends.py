@@ -6,13 +6,17 @@
 # @Desc  : 后台逻辑 (由于该项目重点是在OAuth2.0 上，所以平台自身管理员帐号 将直接使用配置文件配置)
 
 from oauth_pen import models
+from oauth_pen.models import SuperUser
 from oauth_pen.settings import oauth_pen_settings
+
+SESSION_KEY = '_pen_auth_user'
+HASH_SESSION_KEY = '_pen_auth_user_hash'
 
 
 class AuthMixin:
     def __init__(self, request):
         self.request = request
-        self.user_id = request.session[oauth_pen_settings.SESSION_KEY]
+        self.user_id = None
 
     def get_user(self):
         """
@@ -20,21 +24,13 @@ class AuthMixin:
         :param request: 当前请求
         :return:
         """
-        pass
+        return models.AnonymousUser()
 
 
-# TODO 平台自身权限的相关逻辑
 class AuthLibCore(AuthMixin):
     def __init__(self, request):
         super(AuthLibCore, self).__init__(request)
-
-        self.admin_user = {'id': '1',
-                           'username': oauth_pen_settings.ADMIN_NAME,
-                           'password': oauth_pen_settings.ADMIN_PASSWORD}  # 通过配置文件配置管理员帐号
-
-    @property
-    def is_super_user(self):
-        return True
+        self.admin_user = SuperUser()
 
     def get_user(self):
         """
@@ -42,7 +38,20 @@ class AuthLibCore(AuthMixin):
         :return:
         """
         user = None
-        # TODO 2018-9-14
+
+        try:
+            self.user_id = self.request.session[SESSION_KEY]
+        except:
+            pass
+        else:
+            # 平台自身管理员是通过配置文件配置/user_id的获取逻辑是放在session模块中的
+            if self.admin_user.id == self.user_id:
+                user = self.admin_user
+
+            # 验证session
+            if hasattr(user, 'get_session_auth_hash'):
+                session_hash = self.request.session.get(HASH_SESSION_KEY)
+                if session_hash and
 
         return user or models.AnonymousUser()
 
