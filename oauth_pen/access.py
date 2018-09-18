@@ -6,18 +6,20 @@
 # @Desc  : 检测当前请求是否有权限
 import inspect
 from urllib.parse import urlparse, urlunparse
-
 from django.http import HttpResponse, HttpResponseRedirect, QueryDict
-
-from oauth_pen.access.super_user_backends import SuperUser
+from django.urls import reverse
 from oauth_pen.exceptions import ErrorConfigException
 from oauth_pen.settings import oauth_pen_settings
 
 
 class AccessMixin:
-    login_url = None  # 登录地址
-    raise_exception = None  # 没有权限的时候抛出的异常获取处理的函数
-    redirect_field_name = oauth_pen_settings.REDIRECT_FIELD_NAME  # 登录成功后，url中代表跳转地址参数的key
+    def __init__(self):
+        self.login_url = None  # 登录地址
+        self.raise_exception = None  # 没有权限的时候抛出的异常获取处理的函数
+        self.redirect_field_name = oauth_pen_settings.REDIRECT_FIELD_NAME  # 登录成功后，url中代表跳转地址参数的key
+
+        self.get_login_url()
+        self.get_redirect_field_name()
 
     def get_login_url(self):
         """
@@ -28,7 +30,7 @@ class AccessMixin:
         self.login_url = self.login_url or oauth_pen_settings.LOGIN_URL
 
         if not self.login_url:
-            raise ErrorConfigException('请配置SUPER_LOGIN_URL 或重写get_login_url方法')
+            raise ErrorConfigException('请配置LOGIN_URL 或重写get_login_url方法')
 
         return self.login_url
 
@@ -94,11 +96,21 @@ class LoginRequiredMixin(AccessMixin):
 
 class SuperUserRequiredMixin(AccessMixin):
     """
-    view 的mixin类 当前请求必须是超级管理员才能操作
+    view 的mixin类 当前请求必须是平台管理员才能操作
     """
 
-    def dispatch(self, request, *args, **kwargs):
-        if not SuperUser(request).is_super_user:
-            return self.handle_no_permission(request)
+    def get_login_url(self):
+        """
+        获取登录地址
 
-        return super(SuperUserRequiredMixin, self).dispatch(request, *args, **kwargs)
+        :return:
+        """
+        self.login_url = reverse('pen_admin:login', current_app='oauth_pen')
+
+        return self.login_url
+
+    def dispatch(self, request, *args, **kwargs):
+        if request.user.is_super:
+            return super(SuperUserRequiredMixin, self).dispatch(request, *args, **kwargs)
+
+        return self.handle_no_permission(request)

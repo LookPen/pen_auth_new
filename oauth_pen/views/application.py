@@ -6,8 +6,9 @@
 # @Desc  : application 管理页面
 # from braces.views import LoginRequiredMixin
 from django.forms import model_to_dict
-from django.http import HttpResponse, JsonResponse
+from django.http import HttpResponse, JsonResponse, HttpResponseRedirect
 from django.shortcuts import render
+from django.urls import reverse
 from django.views import View
 
 from oauth_pen import models
@@ -15,18 +16,12 @@ from oauth_pen.access import SuperUserRequiredMixin
 from oauth_pen.settings import oauth_pen_settings
 
 
-def app_page(request):
-    return render(request, 'application/application.html')
+class Application(SuperUserRequiredMixin, View):
+    def get(self, request, *args, **kwargs):
+        return render(self.request, 'application/application.html')
 
 
-class BaseView(SuperUserRequiredMixin, View):
-    def dispatch(self, request, *args, **kwargs):
-        self.login_url = 'o/admin'  # 超级管理员的登录地址
-
-        return super(BaseView, self).dispatch(request, *args, **kwargs)
-
-
-class ApiApplicationList(BaseView):
+class ApiApplicationList(SuperUserRequiredMixin, View):
     def get(self, request):
         """
         获取客户端列表
@@ -50,7 +45,7 @@ class ApiApplicationList(BaseView):
         })
 
 
-class ApiApplication(BaseView):
+class ApiApplication(SuperUserRequiredMixin, View):
     def get(self, request):
         """
         获取客户端信息

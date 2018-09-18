@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils import crypto
 
 from oauth_pen.settings import oauth_pen_settings
 from . import generators
@@ -103,12 +104,23 @@ class AnonymousUser(UserAbstract):
 
 class SuperUser(UserAbstract):
     """
-    超级管理员
+    平台管理员
     """
 
     # 通过配置文件配置管理员帐号
+    user_id = '1'
     username = oauth_pen_settings.ADMIN_NAME,
     password = oauth_pen_settings.ADMIN_PASSWORD
+
+    def get_session_auth_hash(self):
+        """
+        获取用户密码的hmac hash值
+        :return:
+        """
+        key_salt = 'oauth_pen.models' + self.__class__.__name__
+
+        # 在对value计算 hamc hash值时 最好每一个密钥都不一样，所以这里的key_salt传的是当前的方法路径，将key_salt和setting.SECRET_KEY 组合起来作为密钥计算hmac 的hash值
+        return crypto.salted_hmac(key_salt, self.password).hexdigest()
 
     def save(self, force_insert=False, force_update=False, using=None,
              update_fields=None):

@@ -18,6 +18,5 @@ from django.contrib import admin
 
 
 urlpatterns = [
-    url(r'^admin/', admin.site.urls),
-    url(r'^o/', include('oauth_pen.urls'))
+    url(r'^o/', include('oauth_pen.urls',namespace='pen_admin'))
 ]

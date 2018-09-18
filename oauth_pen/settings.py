@@ -15,7 +15,8 @@ USER_SETTINGS = getattr(settings, 'OAUTH_PEN', None)  # 允许用户配置覆盖
 DEFAULTS = {
     'APPLICATION_MODEL': 'oauth_pen.models.Application',  # application 的实体
     'REDIRECT_FIELD_NAME': 'next',  # 登录成功后，url中代表跳转地址参数的key
-    'LOGIN_URL': 'o/login'  # 登录地址
+    'ADMIN_NAME': 'Pen',
+    'ADMIN_PASSWORD': 'Pen'
 }
 
 # 如果以下配置是字符串的形式，则进行反射处理

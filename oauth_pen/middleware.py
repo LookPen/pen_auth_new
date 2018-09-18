@@ -8,15 +8,24 @@ from django.utils.deprecation import MiddlewareMixin
 from django.utils.functional import SimpleLazyObject
 
 from oauth_pen.exceptions import ErrorConfigException
+from oauth_pen.backends import AuthLibCore
 
 
 def get_user(request):
+    """
+    平台自身认证 用户获取
+    :param request:当前请求
+    :return:
+    """
     if not hasattr(request, '_cache_user'):
-        request._cache_user = None  # TODO 获取请求的用户
+        request._cache_user = AuthLibCore(request).get_user()
     return request._cache_user
 
 
 class AuthenticationMiddleware(MiddlewareMixin):
+    """
+    平台自身认证中间件
+    """
     def process_request(self, request):
         if not hasattr(request, 'session'):
             raise ErrorConfigException(
