@@ -8,7 +8,7 @@ from django.utils.crypto import constant_time_compare
 
 from oauth_pen import models
 from oauth_pen.models import SuperUser
-from oauth_pen.settings import oauth_pen_settings
+from oauth_pen import signals
 
 SESSION_KEY = '_pen_auth_user'
 HASH_SESSION_KEY = '_pen_auth_user_hash'
@@ -31,6 +31,7 @@ class AuthLibCore(AuthMixin):
     """
     平台自身认证
     """
+
     def __init__(self, request):
         super(AuthLibCore, self).__init__(request)
         self.admin_user = SuperUser()
@@ -48,23 +49,63 @@ class AuthLibCore(AuthMixin):
             pass
         else:
             # 平台自身管理员是通过配置文件配置
-            if self.admin_user.id == self.user_id:
+            if self.admin_user.user_id == self.user_id:
                 user = self.admin_user
 
             # 验证session
             if hasattr(user, 'get_session_auth_hash'):
                 session_hash = self.request.session.get(HASH_SESSION_KEY)
                 if not session_hash or not constant_time_compare(session_hash, user.get_session_auth_hash()):
-                    self.request.session.flush() # 当前session 无效 清空session
+                    self.request.session.flush()  # 当前session 无效 清空session
                     user = None
 
         return user or models.AnonymousUser()
+
+    def authenticate(self, username, password):
+        """
+        验证是否有效用户，并返回用户实体
+        :param username:用户名
+        :param password:密码
+        :return:
+        """
+        if self.admin_user.username == username and self.admin_user.password == password:  # 简单的判断一下用户名密码
+            return self.admin_user
+
+        # 登录失败信号
+        signals.user_login_failed.send(sender=__name__,
+                                       credentials={'username': username, 'password': password},
+                                       request=self.request)
+
+    def login(self, user):
+        """
+        登录
+        :param user: 已经通过验证的用户
+        :return:
+        """
+        session_auth_hash = user.get_session_auth_hash()
+
+        if SESSION_KEY in self.request.session:
+            # 避免不用的用户使用相同的session key
+            if self.request.session[SESSION_KEY] != user.user_id or not \
+                    constant_time_compare(session_auth_hash, self.request.session.get(HASH_SESSION_KEY, '')):
+                self.request.session.flush()
+        else:
+            # 新建一个session key
+            self.request.session.cycle_key()
+
+        self.request.session[SESSION_KEY] = user.user_id
+        self.request.session[HASH_SESSION_KEY] = session_auth_hash
+        self.request.user = user
+
+        # 登录成功信号
+        signals.user_login_success.send(sender=__name__, request=self.request, user=user)
 
 
 class PenOAuthLibCore(AuthMixin):
     """
     oauth_pen 认证
     """
+
     def get_user(self):
         """
         获取用户实体

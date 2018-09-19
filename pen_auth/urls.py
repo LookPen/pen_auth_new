@@ -17,5 +17,5 @@ from django.conf.urls import url, include
 from oauth_pen.site import pen_site
 
 urlpatterns = [
-    url(r'^o/', pen_site.urls)
+    url(r'^pen/', pen_site.urls)
 ]

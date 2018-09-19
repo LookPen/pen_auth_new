@@ -1,10 +1,63 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Pen 登录</title>
+
+    <link rel="stylesheet" href={% static 'libs/layui/css/layui.css' %}>
+    <link rel="stylesheet" href={% static 'css/login.css' %}>
 </head>
 <body>
-Login
+
+<div class="layadmin-user-login layadmin-user-display-show">
+
+    <div class="layadmin-user-login-main">
+        <div class="layadmin-user-login-box">
+            <h2>Pen Admin</h2>
+            <p>oauth_pen 的后台管理(客户端、token管理)</p>
+        </div>
+
+        <div class="layadmin-user-login-box layadmin-user-login-body layui-form">
+            {% if form.non_field_errors %}
+                {% for error in form.non_field_errors %}
+                    <p class="error-msg">
+                        * {{ error }}
+                    </p>
+                {% endfor %}
+            {% endif %}
+
+            <form action="{{ app_path }}" method="post">
+                {% csrf_token %}
+
+                <div class="layui-form-item">
+                    <label class="layadmin-user-login-icon layui-icon layui-icon-username"></label>
+                    {{ form.username.errors }}
+                    {{ form.username }}
+                </div>
+
+                <div class="layui-form-item">
+                    <label class="layadmin-user-login-icon layui-icon layui-icon-password"></label>
+                    {{ form.password.errors }}
+                    {{ form.password }}
+                </div>
+
+                <div class="layui-form-item">
+                    <input class="layui-btn layui-btn-fluid" type="submit" value="登 录">
+                </div>
+
+            </form>
+
+
+        </div>
+    </div>
+
+    <div class="layui-trans layadmin-user-login-footer">
+        <p>© 2018 <a href="//www.lookpen.com/" target="_blank">我的主页</a></p>
+    </div>
+
+</div>
+
+{#<script src={% static 'libs/layui/layui.js' %}></script>#}
 </body>
 </html>

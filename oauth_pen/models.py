@@ -109,7 +109,7 @@ class SuperUser(UserAbstract):
 
     # 通过配置文件配置管理员帐号
     user_id = '1'
-    username = oauth_pen_settings.ADMIN_NAME,
+    username = oauth_pen_settings.ADMIN_NAME
     password = oauth_pen_settings.ADMIN_PASSWORD
 
     def get_session_auth_hash(self):
@@ -139,4 +139,4 @@ class SuperUser(UserAbstract):
 
     @property
     def is_super(self):
-        return False
+        return True
