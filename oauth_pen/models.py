@@ -1,6 +1,6 @@
 from django.db import models
 from django.urls import reverse
-from django.utils import crypto
+from django.utils import crypto, timezone
 
 from oauth_pen.settings import oauth_pen_settings
 from . import generators
@@ -80,6 +80,91 @@ class Application(ApplicationAbstract):
     客户端信息
     """
     pass
+
+
+class AccessToken(models.Model):
+    user = models.ForeignKey(oauth_pen_settings.AUTH_USER_MODEL, blank=True, null=True, on_delete=models.CASCADE)
+    application = models.ForeignKey(oauth_pen_settings.APPLICATION_MODEL, on_delete=models.CASCADE)
+    token = models.CharField(max_length=255, unique=True)
+    expires = models.DateTimeField('')
+
+    def is_expired(self):
+        """
+        当前token 是否过期
+        :return:
+        """
+        if self.expires:
+            return timezone.now() >= self.expires
+        return True
+
+    def is_valid(self):
+        """
+        当前token 是否有效
+        :return:
+        """
+
+        return not self.is_expired()
+
+    def __str__(self):
+        return self.token
+
+
+class RefreshToken(models.Model):
+    """
+    A RefreshToken instance represents a token that can be swapped for a new
+    access token when it expires.
+
+    Fields:
+
+    * :attr:`user` The Django user representing resources' owner
+    * :attr:`token` Token value
+    * :attr:`application` Application instance
+    * :attr:`access_token` AccessToken instance this refresh token is
+                           bounded to
+    """
+    access_token = models.OneToOneField(AccessToken, related_name='refresh_token', on_delete=models.CASCADE)
+    user = models.ForeignKey(oauth_pen_settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    token = models.CharField(max_length=255, unique=True)
+    application = models.ForeignKey(oauth_pen_settings.APPLICATION_MODEL, on_delete=models.CASCADE)
+
+    def revoke(self):
+        """
+        删除刷新token以及对应的token
+        """
+        AccessToken.objects.get(id=self.access_token.id).revoke()
+        self.delete()
+
+    def __str__(self):
+        return self.token
+
+
+class Grant(models.Model):
+    """
+    一个短时间的临时凭证，用于交换token
+    """
+    user = models.ForeignKey(oauth_pen_settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    code = models.CharField(max_length=255, unique=True)
+    application = models.ForeignKey(oauth_pen_settings.APPLICATION_MODEL, on_delete=models.CASCADE)
+    expires = models.DateTimeField()
+    redirect_uri = models.CharField(max_length=255)
+    state = models.TextField(blank=True)
+
+    def is_expired(self):
+        """
+        检查code 是否过期
+        """
+        if not self.expires:
+            return True
+
+        return timezone.now() >= self.expires
+
+    def redirect_uri_allowed(self, uri):
+        """
+        回调地址是否有效
+        :param uri:
+        :return:
+        """
+        return uri == self.redirect_uri
 
 
 class AnonymousUser(UserAbstract):

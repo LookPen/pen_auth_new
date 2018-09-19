@@ -13,15 +13,25 @@ USER_SETTINGS = getattr(settings, 'OAUTH_PEN', None)  # 允许用户配置覆盖
 
 # 默认配置
 DEFAULTS = {
-    'APPLICATION_MODEL': 'oauth_pen.models.Application',  # application 的实体
+    'APPLICATION_MODEL': 'oauth_pen.models.Application',  # 客户端信息
     'REDIRECT_FIELD_NAME': 'next',  # 登录成功后，url中代表跳转地址参数的key
-    'ADMIN_NAME': 'Pen',
-    'ADMIN_PASSWORD': 'Pen'
+    'ADMIN_NAME': 'Pen',  # 平台管理员帐号
+    'ADMIN_PASSWORD': 'Pen',  # 平台管理员密码
+
+    'AUTH_USER_MODEL': 'oauth_pen.models.User',  # 用户信息
+    'AUTHORIZATION_CODE_EXPIRE_SECONDS': 60,  # Code 过期时间 单位 秒
+    'ACCESS_TOKEN_EXPIRE_SECONDS': 36000,  # token 过期时间 单位 秒
+
+    'OAUTH_SERVER_CLASS': '',  # TODO
+    'OAUTH_VALIDATOR_CLASS': ''
 }
 
 # 如果以下配置是字符串的形式，则进行反射处理
 IMPORT_STRINGS = [
-    'APPLICATION_MODEL',  # eg:app_name.model_name
+    'APPLICATION_MODEL',
+    'AUTH_USER_MODEL',
+    'OAUTH_SERVER_CLASS',  # TODO 注释
+    'OAUTH_VALIDATOR_CLASS',
 ]
 
 
