@@ -70,3 +70,17 @@ class SuperLoginView(generic.FormView):
                                              self.request.GET.get(self.redirect_field_name, ''))
 
         return redirect_url
+
+
+class SuperLogOutView(generic.View):
+    """
+    平台管理员退出登录
+    """
+
+    def __init__(self):
+        self.app_name = 'oauth_pen'
+        self.login_url = reverse('pen_admin:login', current_app=self.app_name)
+
+    def dispatch(self, request, *args, **kwargs):
+        AuthLibCore(self.request).logout()
+        return HttpResponseRedirect(self.login_url)

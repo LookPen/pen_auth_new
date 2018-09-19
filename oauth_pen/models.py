@@ -1,4 +1,5 @@
 from django.db import models
+from django.urls import reverse
 from django.utils import crypto
 
 from oauth_pen.settings import oauth_pen_settings
@@ -140,3 +141,7 @@ class SuperUser(UserAbstract):
     @property
     def is_super(self):
         return True
+
+    @property
+    def logout_path(self):
+        return reverse('pen_admin:logout', current_app='oauth_pen')

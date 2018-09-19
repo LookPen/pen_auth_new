@@ -22,7 +22,14 @@
     </div>
 </div>
 
+
 <div class="layui-container">
+
+    <div class="login-info">
+        欢迎：{{ request.user.username }}
+        <a href="{{ request.user.logout_path }}">退出</a>
+    </div>
+
     {% block content %}
 
     {% endblock %}

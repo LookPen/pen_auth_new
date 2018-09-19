@@ -8,3 +8,4 @@ from django.dispatch import Signal
 
 user_login_failed = Signal(providing_args=['credentials', 'request'])  # 用户登录失败触发信号
 user_login_success = Signal(providing_args=['user', 'request'])  # 用户登录成功触发信号
+user_logout_success = Signal(providing_args=['user', 'request'])  # 用户退出登录触发信号

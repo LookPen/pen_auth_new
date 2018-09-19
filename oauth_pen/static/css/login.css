@@ -64,41 +64,6 @@ html {
     padding-left: 38px
 }
 
-.layadmin-user-login-codeimg {
-    max-height: 38px;
-    width: 100%;
-    cursor: pointer;
-    box-sizing: border-box
-}
-
-.layadmin-user-login-other {
-    position: relative;
-    font-size: 0;
-    line-height: 38px;
-    padding-top: 20px
-}
-
-.layadmin-user-login-other > * {
-    display: inline-block;
-    vertical-align: middle;
-    margin-right: 10px;
-    font-size: 14px
-}
-
-.layadmin-user-login-other .layui-icon {
-    position: relative;
-    top: 2px;
-    font-size: 26px
-}
-
-.layadmin-user-login-other a:hover {
-    opacity: .8
-}
-
-.layadmin-user-jump-change {
-    float: right
-}
-
 .layadmin-user-login-footer {
     position: absolute;
     left: 0;
@@ -129,35 +94,6 @@ html {
     box-shadow: 0 0 5px rgba(0, 0, 0, .05)
 }
 
-.ladmin-user-login-theme {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    text-align: center
-}
-
-.ladmin-user-login-theme ul {
-    display: inline-block;
-    padding: 5px;
-    background-color: #fff
-}
-
-.ladmin-user-login-theme ul li {
-    display: inline-block;
-    vertical-align: top;
-    width: 64px;
-    height: 43px;
-    cursor: pointer;
-    transition: all .3s;
-    -webkit-transition: all .3s;
-    background-color: #f2f2f2
-}
-
-.ladmin-user-login-theme ul li:hover {
-    opacity: .9
-}
-
 @media screen and (max-width: 768px) {
     .layadmin-user-login {
         padding-top: 60px
@@ -172,7 +108,7 @@ html {
     }
 }
 
-.layadmin-user-login p.error-msg{
+.layadmin-user-login p.error-msg {
     font-size: 14px;
     font-weight: 700;
     display: block;

@@ -7,7 +7,7 @@
 from django.utils.crypto import constant_time_compare
 
 from oauth_pen import models
-from oauth_pen.models import SuperUser
+from oauth_pen.models import SuperUser, AnonymousUser
 from oauth_pen import signals
 
 SESSION_KEY = '_pen_auth_user'
@@ -99,6 +99,14 @@ class AuthLibCore(AuthMixin):
 
         # 登录成功信号
         signals.user_login_success.send(sender=__name__, request=self.request, user=user)
+
+    def logout(self):
+        user = self.request.user
+        self.request.session.flush()  # 清除session
+        self.request.user = AnonymousUser()
+
+        # 发送退出登录的信号
+        signals.user_logout_success.send(sender=__name__, request=self.request, user=user)
 
 
 class PenOAuthLibCore(AuthMixin):

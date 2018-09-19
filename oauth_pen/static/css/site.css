@@ -7,3 +7,15 @@ body {
     line-height: 200px;
     text-align: center;
 }
+
+.login-info {
+    display: inline-block;
+    margin-top: 20px;
+    float: right;
+}
+
+.login-info a {
+    margin-left: 5px;
+    padding-right: 5px;
+    color: #01AAED;
+}

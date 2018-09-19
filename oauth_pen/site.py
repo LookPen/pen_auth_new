@@ -16,7 +16,8 @@ class PenAdmin:
         # 管理界面
         management_urlpatterns = [
             url(r'^index$', application.Application.as_view(), name='index'),
-            url(r'^login$', login.SuperLoginView.as_view(), name='login')
+            url(r'^login$', login.SuperLoginView.as_view(), name='login'),
+            url(r'^logout$', login.SuperLogOutView.as_view(), name='logout')
         ]
 
         # api接口
