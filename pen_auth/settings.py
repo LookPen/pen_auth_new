@@ -27,6 +27,10 @@ DEBUG = True
 ALLOWED_HOSTS = []
 
 # Application definition
+OAUTH_PEN = {
+    'ADMIN_NAME': 'Pen',
+    'ADMIN_PASSWORD': '123123'
+}
 
 INSTALLED_APPS = [
     # 'django.contrib.admin',# change_不使用系统自带权限
@@ -42,8 +46,8 @@ MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
-    'oauth_pen.middleware.AuthenticationMiddleware',
-    # 'django.middleware.csrf.CsrfViewMiddleware',# TODO
+    'oauth_pen.middleware.AuthenticationMiddleware',  # change 使用自己的权限
+    # 'django.middleware.csrf.CsrfViewMiddleware',# change 暂不使用
     # 'django.contrib.auth.middleware.AuthenticationMiddleware',# change_不使用系统自带权限
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',

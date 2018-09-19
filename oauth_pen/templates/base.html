@@ -30,6 +30,8 @@
         <a href="{{ request.user.logout_path }}">退出</a>
     </div>
 
+    <i id="url_root" class="layui-hide">{{ url_root }}</i>
+
     {% block content %}
 
     {% endblock %}

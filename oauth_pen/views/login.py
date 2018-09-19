@@ -78,6 +78,7 @@ class SuperLogOutView(generic.View):
     """
 
     def __init__(self):
+        super(SuperLogOutView, self).__init__()
         self.app_name = 'oauth_pen'
         self.login_url = reverse('pen_admin:login', current_app=self.app_name)
 

@@ -18,7 +18,9 @@ from oauth_pen.settings import oauth_pen_settings
 
 class Application(SuperUserRequiredMixin, View):
     def get(self, request, *args, **kwargs):
-        return render(self.request, 'application/application.html')
+        url = reverse('pen_admin:index')
+        url = url.strip('/').split('/')[0]  # 请求的根路径是用户自定义的
+        return render(self.request, 'application/application.html', {'url_root': '/' + url})
 
 
 class ApiApplicationList(SuperUserRequiredMixin, View):
@@ -113,4 +115,4 @@ class ApiApplication(SuperUserRequiredMixin, View):
         if data:
             data.delete()
 
-        return HttpResponse()
+        return JsonResponse({'status': 'success'})

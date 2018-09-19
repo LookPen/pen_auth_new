@@ -4,6 +4,7 @@ layui.use(['layer', 'table', 'carousel', 'form'], function () {
     var table = layui.table;//表格
     var carousel = layui.carousel;//轮播
     var form = layui.form;//表单
+    var $ = layui.$;
 
     //首页加载
     say_hi(layer, carousel);
@@ -30,10 +31,13 @@ function say_hi(layer, carousel) {
 
 //绑定客户端列表
 function bind_app_list(table) {
+    var $ = layui.$;
+    var url_root = $('#url_root').text()
+
     table.render({
         elem: '#apps',
         height: 332,
-        url: '/o/api/app_list',
+        url: url_root + '/api/app_list',
         page: true,
         cols: [[
             {field: 'client_id', title: '客户端id', width: 180, sort: true, fixed: 'left'},
@@ -48,11 +52,11 @@ function bind_app_list(table) {
 
 //绑定客户端详情
 function bind_app_detail(layer, form, client_id) {
-    $ = layui.$;
-
+    var $ = layui.$;
+    var url_root = $('#url_root').text()
     $.ajax({
         type: "GET",
-        url: "/o/api/app",
+        url: url_root + "/api/app",
         data: {'client_id': client_id},
         success: function (data) {
             form.val('app_info', {
@@ -100,11 +104,12 @@ function monitor_app_event(layer, table, form) {
         var $ = layui.$;
         var layEvent = obj.event;
         var layID = $(this).attr('lay-id');
+        var url_root = $('#url_root').text();
 
         if (layEvent === 'del') {
             layer.confirm('删除该客户端后,该客户端产生的token相关数据将清除！', function (index) {
                 $.ajax({
-                    url: "/o/api/app?client_id=" + layID,
+                    url: url_root + "/api/app?client_id=" + layID,
                     type: "DELETE",
                     dataType: 'json',
                     success: function (data) {
@@ -126,8 +131,11 @@ function monitor_app_event(layer, table, form) {
 
     //监听表单提交事件
     form.on('submit(save_app)', function (data) {
+        var $ = layui.$;
+        var url_root = $('#url_root').text();
+
         $.ajax({
-            url: "/o/api/app",
+            url: url_root + "/api/app",
             data: data.field,
             type: "POST",
             dataType: 'json',
