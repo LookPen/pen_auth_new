@@ -1,7 +1,11 @@
+from urllib.parse import urlparse, parse_qsl
+
 from django.apps import apps
+from django.conf import settings
 from django.db import models
 from django.urls import reverse
 from django.utils import crypto, timezone
+from django.contrib.auth import hashers
 
 from oauth_pen.exceptions import ErrorConfigException
 from oauth_pen.settings import oauth_pen_settings
@@ -87,7 +91,7 @@ class UserAbstract(models.Model):
         :param password:用户输入的密码
         :return:
         """
-        pass
+        hashers.check_password(password, self.password)
 
     def set_password(self, password):
         """
@@ -95,7 +99,8 @@ class UserAbstract(models.Model):
         :param password:用户输入的密码
         :return:
         """
-        self.password = None  # TODO 生成密码 2018-9-19
+        self.password = hashers.make_password(password, __name__ + settings.SECRET_KEY)
+        self._password = password
 
     class Meta:
         abstract = True
@@ -171,7 +176,7 @@ class Grant(models.Model):
     code = models.CharField('用于换取token的code', max_length=255, unique=True)
     application = models.ForeignKey(oauth_pen_settings.APPLICATION_MODEL, on_delete=models.CASCADE)
     expires = models.DateTimeField('code有效期')
-    redirect_uri = models.CharField('换取token后的回调地址', max_length=255)
+    redirect_uris = models.CharField('换取token后的回调地址(多个回调地址空格分开)', max_length=255)
     state = models.TextField('客户端数据', blank=True)
 
     def is_expired(self):
@@ -189,7 +194,17 @@ class Grant(models.Model):
         :param uri:
         :return:
         """
-        return uri == self.redirect_uri
+        for allowed_uri in self.redirect_uris.split():
+            parsed_allowed_uri = urlparse(allowed_uri)
+            parsed_uri = urlparse(uri)
+            if parsed_allowed_uri.scheme == parsed_uri.scheme and parsed_allowed_uri.netloc == parsed_uri.netloc and parsed_allowed_uri.path == parsed_uri.path:
+                aqs_set = set(parse_qsl(parsed_allowed_uri.query))
+                uqs_set = set(parse_qsl(parsed_uri.query))
+
+                if aqs_set.issubset(uqs_set):
+                    return True
+
+        return False
 
 
 class User(UserAbstract):

@@ -216,22 +216,47 @@ class OAuthValidator(RequestValidator):
         """
         try:
             user = get_user_model().objects.get(username=username)
-
-
+            if user.check_password(password) and user.is_active:
+                return True
         except ObjectDoesNotExist:
+            return False
+        else:
             return False
 
     def validate_redirect_uri(self, client_id, redirect_uri, request, *args, **kwargs):
-        pass
+        """
+        检测回调地址是否有效
+        :param client_id:客户端ID
+        :param redirect_uri:回调地址
+        :param request:当前请求
+        :param args:
+        :param kwargs:
+        :return:
+        """
+        return request.client.redirect_uri_allowed(redirect_uri)
 
     def validate_silent_login(self, request):
-        pass
+        """
+        验证静默登录
+        :param request:
+        :return:
+        """
+        # TODO 静默授权验证
 
     def get_default_scopes(self, client_id, request, *args, **kwargs):
-        pass
+        """
+        获取默认授权范围
+        :param client_id:
+        :param request:
+        :param args:
+        :param kwargs:
+        :return:
+        """
+        # TODO 获取默认授权范围
 
     def authenticate_client(self, request, *args, **kwargs):
         pass
+        # TODO 验证客户端 2018-9-20
 
     def authenticate_client_id(self, client_id, request, *args, **kwargs):
         pass
