@@ -10,8 +10,10 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.db import transaction
 from django.utils import timezone
 from oauthlib.oauth2 import RequestValidator
+
 from oauth_pen.exceptions import ErrorConfigException
 from oauth_pen import models
+from oauth_pen.models import get_application_model, get_user_model
 from oauth_pen.settings import oauth_pen_settings
 
 
@@ -19,6 +21,24 @@ class OAuthValidator(RequestValidator):
     """
     按照oauth2.0的规范，验证当前请求是否需要授权
     """
+
+    @classmethod
+    def _load_application(cls, client_id, request):
+        """
+        初始化当前请求的客户端
+        :param client_id:客户端ID
+        :param request:当前请求
+        :return:客户端
+        """
+        try:
+            request.client = request.client or get_application_model().objects.get(client_id=client_id)
+            if request.client.is_usable(request):
+                return request.client
+
+        except ObjectDoesNotExist:
+            return None
+        else:
+            return None
 
     def validate_bearer_token(self, token, scopes, request):
         """
@@ -57,9 +77,10 @@ class OAuthValidator(RequestValidator):
         """
         try:
             token = models.RefreshToken.objects.select_related('user', 'application').get(token=refresh_token)
-
             request.user = token.user
-            request.refresh_token = token
+
+            # 为了避免后续再查找该请求的RefreshToken实例，将他缓存到当前请求中
+            request.cache_refresh_token = token
 
             return token.application == client
 
@@ -94,22 +115,20 @@ class OAuthValidator(RequestValidator):
         :param kwargs:
         :return:
         """
-        # TODO 3 2018-9-19
         expires = timezone.now() + timedelta(seconds=oauth_pen_settings.ACCESS_TOKEN_EXPIRE_SECONDS)
 
         refresh_token_code = token.get('refresh_token', None)
 
         if refresh_token_code:
-            # 刷新操作
-            refresh_token_instance = getattr(request, 'refresh_token_instance', None)
+            # 需要生成refresh_token的access_token
+            cache_refresh_token = getattr(request, 'cache_refresh_token', None)
 
-            if not self.rotate_refresh_token(request) and \
-                    isinstance(refresh_token_instance, models.RefreshToken) and \
-                    refresh_token_instance.access_token:
+            if not self.rotate_refresh_token(request) and isinstance(cache_refresh_token, models.RefreshToken) and \
+                    cache_refresh_token.access_token:
 
-                # token 重复使用
+                # 刷新token后不变更refresh_token（直接修改之前的AccessToken，RefreshToken保持不变）
                 access_token = models.AccessToken.objects.select_for_update().get(
-                    pk=refresh_token_instance.access_token.pk
+                    pk=cache_refresh_token.access_token.pk
                 )
                 access_token.user = request.user
                 access_token.scope = token['scope']
@@ -118,57 +137,89 @@ class OAuthValidator(RequestValidator):
                 access_token.application = request.client
                 access_token.save()
             else:
-                # 使用新的token
-                if isinstance(refresh_token_instance, models.RefreshToken):
+                # 生成一个带有refresh_token的access_token 或
+                # 刷新token后变更refresh_token（删除原有的AccessToken/RefreshToken 创建新的AccessToken/RefreshToken）
+                if isinstance(cache_refresh_token, models.RefreshToken):
                     try:
-                        refresh_token_instance.revoke()
+                        cache_refresh_token.revoke()
                     except (models.AccessToken.DoesNotExist, models.RefreshToken.DoesNotExist):
                         pass
                     else:
-                        setattr(request, 'refresh_token_instance', None)
+                        setattr(request, 'cache_refresh_token', None)
 
-                access_token = self._create_access_token(expires, request, token)
+                access_token = models.AccessToken.objects.create(user=request.user,
+                                                                 expires=expires,
+                                                                 token=token['access_token'],
+                                                                 application=request.client)
 
-                refresh_token = models.RefreshToken(
-                    user=request.user,
-                    token=refresh_token_code,
-                    application=request.client,
-                    access_token=access_token
-                )
-                refresh_token.save()
+                models.RefreshToken.objects.create(user=request.user,
+                                                   token=refresh_token_code,
+                                                   application=request.client,
+                                                   access_token=access_token)
         else:
-            # 不需要刷新、直接添加token
-            self._create_access_token(expires, request, token)
+            # 生成不需要refresh_token的access_token
+            models.AccessToken.objects.create(user=request.user,
+                                              expires=expires,
+                                              token=token['access_token'],
+                                              application=request.client)
 
-    @classmethod
-    def _create_access_token(cls, expires, request, token):
+    def rotate_refresh_token(self, request):
         """
-        创建一个新的token
-        :param expires:
+        在刷新token成功后，返回的新的刷新token是否变化
         :param request:
-        :param token:
         :return:
         """
-        access_token = models.AccessToken(
-            user=request.user,
-            expires=expires,
-            token=token['access_token'],
-            application=request.client
-        )
-        access_token.save()
-        return access_token
+        return oauth_pen_settings.ROTATE_REFRESH_TOKEN
 
     def invalidate_authorization_code(self, client_id, code, request, *args, **kwargs):
-        pass
+        """
+        让code(用于交换token的凭据) 失效
+        :param client_id:
+        :param code:
+        :param request:
+        :param args:
+        :param kwargs:
+        :return:
+        """
+        grant = models.Grant.objects.get(code=code, application=request.client)
+        grant.delete()
 
     def validate_silent_authorization(self, request):
-        pass
+        """
+        静默授权验证
+        :param request:
+        :return:
+        """
+        # TODO 静默授权验证
 
     def validate_client_id(self, client_id, request, *args, **kwargs):
-        pass
+        """
+        验证客户端ID 是否有效
+        :param client_id:客户端ID
+        :param request:当前请求
+        :param args:
+        :param kwargs:
+        :return:
+        """
+        return self._load_application(client_id, request) is not None
 
     def validate_user(self, username, password, client, request, *args, **kwargs):
-        pass
+        """
+        验证用户是否有效
+        :param username:用户名
+        :param password:密码
+        :param client:客户端
+        :param request:当前请求
+        :param args:
+        :param kwargs:
+        :return:
+        """
+        try:
+            user = get_user_model().objects.get(username=username)
+
+
+        except ObjectDoesNotExist:
+            return False
 
     def validate_redirect_uri(self, client_id, redirect_uri, request, *args, **kwargs):
         pass

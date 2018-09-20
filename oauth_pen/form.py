@@ -29,7 +29,7 @@ class SuperLoginForm(forms.Form):
         password = self.cleaned_data.get('password')
 
         if username and password:
-            self.user_cache = AuthLibCore(self.request).authenticate(username, password)
+            self.user_cache = AuthLibCore(self.request).authenticate({'username': username, 'password': password})
             if self.user_cache is None:
                 raise forms.ValidationError('用户名密码错误')
 

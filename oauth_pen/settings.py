@@ -21,6 +21,7 @@ DEFAULTS = {
     'AUTH_USER_MODEL': 'oauth_pen.models.User',  # 用户信息
     'AUTHORIZATION_CODE_EXPIRE_SECONDS': 60,  # Code 过期时间 单位 秒
     'ACCESS_TOKEN_EXPIRE_SECONDS': 36000,  # token 过期时间 单位 秒
+    'ROTATE_REFRESH_TOKEN': True,  # 刷新token成功后 refresh_token是否变更
 
     'OAUTH_SERVER_CLASS': '',  # TODO
     'OAUTH_VALIDATOR_CLASS': ''
@@ -30,8 +31,9 @@ DEFAULTS = {
 IMPORT_STRINGS = [
     'APPLICATION_MODEL',
     'AUTH_USER_MODEL',
-    'OAUTH_SERVER_CLASS',  # TODO 注释
+    'OAUTH_SERVER_CLASS',
     'OAUTH_VALIDATOR_CLASS',
+    'AUTHENTICATION_BACKEND'
 ]
 
 

@@ -1,7 +1,9 @@
+from django.apps import apps
 from django.db import models
 from django.urls import reverse
 from django.utils import crypto, timezone
 
+from oauth_pen.exceptions import ErrorConfigException
 from oauth_pen.settings import oauth_pen_settings
 from . import generators
 
@@ -50,6 +52,14 @@ class ApplicationAbstract(models.Model):
                 and self.authorization_grant_type in (self.GRANT_IMPLICIT, self.GRANT_CLIENT_CREDENTIALS):
             raise ValidationError('{0}模式下必填写redirect_uris'.format(self.authorization_grant_type))
 
+    def is_usable(self, request):
+        """
+        客户端是否可使用
+        :param request: 当前请求
+        :return:
+        """
+        return True
+
     class Meta:
         abstract = True
 
@@ -71,6 +81,22 @@ class UserAbstract(models.Model):
     def is_super(self):
         return False
 
+    def check_password(self, password):
+        """
+        检测密码是否正确
+        :param password:用户输入的密码
+        :return:
+        """
+        pass
+
+    def set_password(self, password):
+        """
+        密码编码
+        :param password:用户输入的密码
+        :return:
+        """
+        self.password = None  # TODO 生成密码 2018-9-19
+
     class Meta:
         abstract = True
 
@@ -79,7 +105,15 @@ class Application(ApplicationAbstract):
     """
     客户端信息
     """
-    pass
+
+    def is_usable(self, request):
+        """
+        客户端是否可使用
+        :param request: 当前请求
+        :return:
+        """
+        # 可以控制哪些客户端可以使用，这里为了简便就都可以使用
+        return True
 
 
 class AccessToken(models.Model):
@@ -111,16 +145,7 @@ class AccessToken(models.Model):
 
 class RefreshToken(models.Model):
     """
-    A RefreshToken instance represents a token that can be swapped for a new
-    access token when it expires.
-
-    Fields:
-
-    * :attr:`user` The Django user representing resources' owner
-    * :attr:`token` Token value
-    * :attr:`application` Application instance
-    * :attr:`access_token` AccessToken instance this refresh token is
-                           bounded to
+    刷新token
     """
     access_token = models.OneToOneField(AccessToken, related_name='refresh_token', on_delete=models.CASCADE)
     user = models.ForeignKey(oauth_pen_settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
@@ -143,11 +168,11 @@ class Grant(models.Model):
     一个短时间的临时凭证，用于交换token
     """
     user = models.ForeignKey(oauth_pen_settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    code = models.CharField(max_length=255, unique=True)
+    code = models.CharField('用于换取token的code', max_length=255, unique=True)
     application = models.ForeignKey(oauth_pen_settings.APPLICATION_MODEL, on_delete=models.CASCADE)
-    expires = models.DateTimeField()
-    redirect_uri = models.CharField(max_length=255)
-    state = models.TextField(blank=True)
+    expires = models.DateTimeField('code有效期')
+    redirect_uri = models.CharField('换取token后的回调地址', max_length=255)
+    state = models.TextField('客户端数据', blank=True)
 
     def is_expired(self):
         """
@@ -165,6 +190,12 @@ class Grant(models.Model):
         :return:
         """
         return uri == self.redirect_uri
+
+
+class User(UserAbstract):
+    username = models.CharField('用户名', max_length=255, unique=True)
+    password = models.CharField('密码', max_length=255)
+    is_active = models.BooleanField('是否激活', default=True)
 
 
 class AnonymousUser(UserAbstract):
@@ -230,3 +261,33 @@ class SuperUser(UserAbstract):
     @property
     def logout_path(self):
         return reverse('pen_admin:logout', current_app='oauth_pen')
+
+
+def get_application_model():
+    """
+    获取客户端实例
+    :return:
+    """
+    try:
+        app_label, model_name = oauth_pen_settings.APPLICATION_MODEL.split('.')
+    except ValueError:
+        raise ErrorConfigException('APPLICATION_MODEL 配置错误 eg: oauth_pen.models.Application')
+    app_model = apps.get_model(app_label, model_name)
+    if app_model is None:
+        raise ErrorConfigException('{0} 不存在'.format(oauth_pen_settings.APPLICATION_MODEL))
+    return app_model
+
+
+def get_user_model():
+    """
+    获取用户实例
+    :return:
+    """
+    try:
+        app_label, model_name = oauth_pen_settings.AUTH_USER_MODEL.split('.')
+    except ValueError:
+        raise ErrorConfigException('APPLICATION_MODEL 配置错误 eg: oauth_pen.models.User')
+    app_model = apps.get_model(app_label, model_name)
+    if app_model is None:
+        raise ErrorConfigException('{0} 不存在'.format(oauth_pen_settings.AUTH_USER_MODEL))
+    return app_model

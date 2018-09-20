@@ -4,14 +4,18 @@
 # @Author: Pen
 # @Date  : 2018-09-14 15:56
 # @Desc  : 后台逻辑 (由于该项目重点是在OAuth2.0 上，所以平台自身管理员帐号 将直接使用配置文件配置)
+from django.core.exceptions import ObjectDoesNotExist
 from django.utils.crypto import constant_time_compare
+from django.utils.module_loading import import_string
 
 from oauth_pen import models
-from oauth_pen.models import SuperUser, AnonymousUser
 from oauth_pen import signals
+from oauth_pen.exceptions import ErrorConfigException
+from oauth_pen.settings import oauth_pen_settings
 
 SESSION_KEY = '_pen_auth_user'
 HASH_SESSION_KEY = '_pen_auth_user_hash'
+BACKEND_SESSION_KEY = '_pen_auth_backend'
 
 
 class AuthMixin:
@@ -34,7 +38,7 @@ class AuthLibCore(AuthMixin):
 
     def __init__(self, request):
         super(AuthLibCore, self).__init__(request)
-        self.admin_user = SuperUser()
+        self.admin_user = models.SuperUser()
 
     def get_user(self):
         """
@@ -61,13 +65,15 @@ class AuthLibCore(AuthMixin):
 
         return user or models.AnonymousUser()
 
-    def authenticate(self, username, password):
+    def authenticate(self, credentials):
         """
         验证是否有效用户，并返回用户实体
-        :param username:用户名
-        :param password:密码
+        :param credentials:用户凭证
         :return:
         """
+        username = credentials.get('username', None)
+        password = credentials.get('password', None)
+
         if self.admin_user.username == username and self.admin_user.password == password:  # 简单的判断一下用户名密码
             return self.admin_user
 
@@ -103,7 +109,7 @@ class AuthLibCore(AuthMixin):
     def logout(self):
         user = self.request.user
         self.request.session.flush()  # 清除session
-        self.request.user = AnonymousUser()
+        self.request.user = models.AnonymousUser()
 
         # 发送退出登录的信号
         signals.user_logout_success.send(sender=__name__, request=self.request, user=user)
@@ -118,10 +124,12 @@ class PenOAuthLibCore(AuthMixin):
         """
         获取用户实体
 
-        :param request:当前请求
+        :param
         :return:
         """
         user = None
         # TODO 获取用户实体
 
         return user or models.AnonymousUser()
+
+
