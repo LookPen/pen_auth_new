@@ -501,7 +501,7 @@ class OAuthValidator(RequestValidator):
 
 
 class OAuthMixin:
-    # TODO 2
+    # TODO 2018-09-21 开发 server_class
     server_class = None
     validator_class = None
     backend_class = None

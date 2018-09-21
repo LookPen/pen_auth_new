@@ -1,10 +1,2 @@
-2018-9-14：
-超级管理员登录逻辑还未完成
-views.login.py
-super_user_backends.py
-froms.py
-backends.py（接着写用户获取的逻辑）
-https://www.cnblogs.com/xiangnan/p/5136428.html 这边文章对django的自身登陆描述得非常棒
-
-
-
+1. public client public的逻辑(authenticate_client_id)
+2. GRANT_TYPE_MAPPING 权限grant_type 有效范围
