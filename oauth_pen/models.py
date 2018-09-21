@@ -64,6 +64,30 @@ class ApplicationAbstract(models.Model):
         """
         return True
 
+    def allow_grant_type(self, grant_type):
+        """
+        验证grant_type 是否有效
+        :param grant_type:
+        :return:
+        """
+        if grant_type == 'refresh_token':
+            if self.authorization_grant_type in (
+                    self.GRANT_AUTHORIZATION_CODE, self.GRANT_PASSWORD, self.GRANT_CLIENT_CREDENTIALS):
+                return True
+            else:
+                return False
+        elif self.authorization_grant_type == grant_type:
+            return True
+        else:
+            return False
+
+    @property
+    def default_redirect_uri(self):
+        if self.redirect_uris:
+            return self.redirect_uris.split().pop(0)
+        else:
+            raise ValueError('implicit、authorization_code 模式必须设置回调地址')
+
     class Meta:
         abstract = True
 
@@ -143,6 +167,12 @@ class AccessToken(models.Model):
         """
 
         return not self.is_expired()
+
+    def revoke(self):
+        """
+        销毁一个token
+        """
+        self.delete()
 
     def __str__(self):
         return self.token

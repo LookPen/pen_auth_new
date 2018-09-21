@@ -4,8 +4,13 @@
 # @Author: Pen
 # @Date  : 2018-09-19 15:27
 # @Desc  : oauth授权Mixin
+import base64
 from datetime import timedelta
 
+import binascii
+from urllib.parse import unquote_plus
+
+from django.conf import settings
 from django.core.exceptions import ObjectDoesNotExist
 from django.db import transaction
 from django.utils import timezone
@@ -13,7 +18,7 @@ from oauthlib.oauth2 import RequestValidator
 
 from oauth_pen.exceptions import ErrorConfigException
 from oauth_pen import models
-from oauth_pen.models import get_application_model, get_user_model
+from oauth_pen.models import get_application_model, get_user_model, ApplicationAbstract
 from oauth_pen.settings import oauth_pen_settings
 
 
@@ -21,7 +26,6 @@ class OAuthValidator(RequestValidator):
     """
     按照oauth2.0的规范，验证当前请求是否需要授权
     """
-
     @classmethod
     def _load_application(cls, client_id, request):
         """
@@ -39,6 +43,76 @@ class OAuthValidator(RequestValidator):
             return None
         else:
             return None
+
+    @classmethod
+    def _basic_auth_string(cls, request):
+        """
+        获取 basic认证的授权token
+        :param request: 请求
+        :return:
+        """
+        auth = request.headers.get('HTTP_AUTHORIZATION', None)
+        if auth:
+            auth_par = auth.split(' ', 1)
+            if len(auth_par) == 2 and auth_par[0] == 'Basic':
+                return auth_par[1]
+
+        return None
+
+    @classmethod
+    def _authenticate_basic_auth(cls, request):
+        """
+        客户端basic 认证
+        :param request:
+        :return:
+        """
+        auth_str = cls._basic_auth_string(request)
+        if not auth_str:
+            return False
+
+        try:
+            encoding = request.encoding or settings.DEFAULT_CHARSET or 'utf-8'
+        except AttributeError:
+            encoding = 'utf-8'
+
+        try:
+            b64_decoded = base64.b64decode(auth_str)
+        except (TypeError, binascii.Error):
+            return False
+
+        try:
+            auth_string_decoded = b64_decoded.decode(encoding)
+        except UnicodeDecodeError:
+            return False
+
+        client_id, client_secret = map(unquote_plus, auth_string_decoded.split(':', 1))
+
+        if cls._load_application(client_id, request) is None:
+            return False
+        elif request.client.client_id != client_id:
+            return False
+        elif request.client.client_secret != client_secret:
+            return False
+        else:
+            return True
+
+    @classmethod
+    def _authenticate_request_body(cls, request):
+        """
+        客户端认证（通过body传参数）
+        """
+        try:
+            client_id = request.client_id
+            client_secret = request.client_secret
+        except AttributeError:
+            return False
+
+        if cls._load_application(client_id, request) is None:
+            return False
+        elif request.client.client_secret != client_secret:
+            return False
+        else:
+            return True
 
     def validate_bearer_token(self, token, scopes, request):
         """
@@ -255,41 +329,175 @@ class OAuthValidator(RequestValidator):
         # TODO 获取默认授权范围
 
     def authenticate_client(self, request, *args, **kwargs):
-        pass
-        # TODO 验证客户端 2018-9-20
+        """
+        验证客户端
+        :param request:请求
+        :param args:
+        :param kwargs:
+        :return:
+        """
+        authenticated = self._authenticate_basic_auth(request)
+        if not authenticated:
+            authenticated = self._authenticate_request_body(request)
+        return authenticated
 
     def authenticate_client_id(self, client_id, request, *args, **kwargs):
-        pass
+        """
+        验证客户端ID
+        :param client_id:客户端ID
+        :param request:请求
+        :param args:
+        :param kwargs:
+        :return:
+        """
+        if self._load_application(client_id, request) is not None:
+            return request.client.client_type == ApplicationAbstract.CLIENT_PUBLIC
+        return False
 
     def validate_scopes(self, client_id, scopes, client, request, *args, **kwargs):
-        pass
+        """
+        验证权限范围
+        :param client_id: 客户端ID
+        :param scopes: 权限范围
+        :param client: 客户端
+        :param request: 请求
+        :param args:
+        :param kwargs:
+        :return:
+        """
+        # TODO 验证权限范围
 
     def validate_grant_type(self, client_id, grant_type, client, request, *args, **kwargs):
-        pass
+        """
+        验证请求中的grant_type 是否有效
+        :param client_id: 客户端ID
+        :param grant_type:
+        :param client:
+        :param request:
+        :param args:
+        :param kwargs:
+        :return:
+        """
+        return request.client.allow_grant_type(grant_type)
 
     def validate_response_type(self, client_id, response_type, client, request, *args, **kwargs):
-        pass
+        """
+        验证响应的类型
+        :param client_id:客户端类型
+        :param response_type: code/token
+        :param client:客户端
+        :param request:请求
+        :param args:
+        :param kwargs:
+        :return:
+        """
+        # TODO 这一步的原因
+        if response_type == 'code':
+            return request.client.allow_grant_type(ApplicationAbstract.GRANT_AUTHORIZATION_CODE)
+        elif response_type == 'token':
+            return request.client.allow_grant_type(ApplicationAbstract.GRANT_IMPLICIT)
+        else:
+            return False
 
     def revoke_token(self, token, token_type_hint, request, *args, **kwargs):
-        pass
+        """
+        销毁一个token
+        :param token:token
+        :param token_type_hint: token 实例的类型
+        :param request:请求
+        :param args:
+        :param kwargs:
+        :return:
+        """
+        if token_type_hint not in ['access_token', 'refresh_token']:
+            token_type_hint = None
+
+        token_types = {
+            'access_token': models.AccessToken,
+            'refresh_token': models.RefreshToken,
+        }
+
+        token_type = token_types.get(token_type_hint, models.AccessToken)
+
+        token_type.objects.get(token=token).revoke()
 
     def confirm_redirect_uri(self, client_id, code, redirect_uri, client, *args, **kwargs):
-        pass
+        """
+        确保回调地址的有效性
+        :param client_id:
+        :param code:
+        :param redirect_uri:
+        :param client:
+        :param args:
+        :param kwargs:
+        :return:
+        """
+        grant = models.Grant.objects.get(code=code, application=client)
+        return grant.redirect_uri_allowed(redirect_uri)
 
     def get_original_scopes(self, refresh_token, request, *args, **kwargs):
-        pass
+        """
+        获取授权范围
+        :param refresh_token:
+        :param request:
+        :param args:
+        :param kwargs:
+        :return:
+        """
+        # TODO 获取授权范围
 
     def get_default_redirect_uri(self, client_id, request, *args, **kwargs):
-        pass
+        """
+        获取默认回调地址
+        :param client_id:客户端id
+        :param request: 请求
+        :param args:
+        :param kwargs:
+        :return:
+        """
+        return request.client.default_redirect_uri
 
     def validate_code(self, client_id, code, client, request, *args, **kwargs):
-        pass
+        """
+        验证 code
+        :param client_id:
+        :param code:
+        :param client:
+        :param request:
+        :param args:
+        :param kwargs:
+        :return:
+        """
+        try:
+            grant = models.Grant.objects.get(code=code, application=client)
+            if not grant.is_expired():
+                request.user = grant.user
+                request.state = grant.state
+                return True
+            return False
+        except models.Grant.DoesNotExist:
+            return False
 
     def validate_user_match(self, id_token_hint, scopes, claims, request):
-        pass
+        """
+        确保token 中的user 和session中的user一致
+        :param id_token_hint:
+        :param scopes:
+        :param claims:
+        :param request:
+        :return:
+        """
+        # TODO 确保token 中的user 和session中的user一致
 
     def get_id_token(self, token, token_handler, request):
-        pass
+        """
+        open id 连接流程  还未理解
+        :param token:
+        :param token_handler:
+        :param request:
+        :return:
+        """
+        # TODO OPEN ID
 
 
 class OAuthMixin:
