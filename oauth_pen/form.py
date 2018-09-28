@@ -37,3 +37,15 @@ class SuperLoginForm(forms.Form):
 
     def get_user(self):
         return self.user_cache
+
+
+class AllowForm(forms.Form):
+    """
+    用户选择是否允许授权的表单（Authorization code /Implicit grant 模式）
+    """
+    allow = forms.BooleanField(required=False)
+    redirect_uri = forms.CharField(widget=forms.HiddenInput())
+    scope = forms.CharField(widget=forms.HiddenInput())
+    client_id = forms.CharField(widget=forms.HiddenInput())
+    state = forms.CharField(required=False, widget=forms.HiddenInput())
+    response_type = forms.CharField(widget=forms.HiddenInput())

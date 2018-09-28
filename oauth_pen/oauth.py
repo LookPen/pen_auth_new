@@ -5,27 +5,26 @@
 # @Date  : 2018-09-19 15:27
 # @Desc  : oauth授权Mixin
 import base64
-from datetime import timedelta
-
 import binascii
+from datetime import timedelta
 from urllib.parse import unquote_plus
+from oauthlib import oauth2
 
 from django.conf import settings
 from django.core.exceptions import ObjectDoesNotExist
 from django.db import transaction
 from django.utils import timezone
-from oauthlib.oauth2 import RequestValidator
 
-from oauth_pen.exceptions import ErrorConfigException
 from oauth_pen import models
 from oauth_pen.models import get_application_model, get_user_model, ApplicationAbstract
 from oauth_pen.settings import oauth_pen_settings
 
 
-class OAuthValidator(RequestValidator):
+class OAuthValidator(oauth2.RequestValidator):
     """
     按照oauth2.0的规范，验证当前请求是否需要授权
     """
+
     @classmethod
     def _load_application(cls, client_id, request):
         """
@@ -499,25 +498,3 @@ class OAuthValidator(RequestValidator):
         """
         # TODO OPEN ID
 
-
-class OAuthMixin:
-    # TODO 2018-09-21 开发 server_class
-    server_class = None
-    validator_class = None
-    backend_class = None
-
-    def get_validator_class(self):
-        self.validator_class = self.validator_class or oauth_pen_settings.OAUTH_VALIDATOR_CLASS
-
-        if self.validator_class is None:
-            raise ErrorConfigException('请配置OAUTH_VALIDATOR_CLASS或重写get_validator_class()')
-
-        return self.validator_class
-
-    def get_server_class(self):
-        self.server_class = self.server_class or oauth_pen_settings.OAUTH_SERVER_CLASS
-
-        if self.server_class is None:
-            raise ErrorConfigException('请配置OAUTH_SERVER_CLASS或重写get_server_class()')
-
-        return self.server_class

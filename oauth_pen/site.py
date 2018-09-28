@@ -7,7 +7,7 @@
 
 from django.conf.urls import url
 from oauth_pen.views import application
-from oauth_pen.views import login
+from oauth_pen.views import login, oauth
 
 
 class PenAdmin:
@@ -20,13 +20,19 @@ class PenAdmin:
             url(r'^logout$', login.SuperLogOutView.as_view(), name='logout')
         ]
 
+        # 授权界面
+        auth_urlpatterns = [
+            url(r'^auth_login', oauth.AuthorizationLoginView.as_view(), name='auth_login'),  # 选择授权前的登录界面
+            url(r'^auth', oauth.AuthorizationView.as_view(), name='auth')
+        ]
+
         # api接口
         api_urlpatterns = [
             url(r'^api/app$', application.ApiApplication.as_view()),
             url(r'^api/app_list$', application.ApiApplicationList.as_view())
         ]
 
-        urlpatterns = management_urlpatterns + api_urlpatterns
+        urlpatterns = management_urlpatterns + auth_urlpatterns + api_urlpatterns
 
         return urlpatterns, 'admin', 'pen_admin'
 

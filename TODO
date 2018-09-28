@@ -1,2 +1,2 @@
 1. public client public的逻辑(authenticate_client_id)
-2. GRANT_TYPE_MAPPING 权限grant_type 有效范围
+2. validate_response_type

@@ -1,22 +1,69 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-# @File  : access.py
+# @File  : mixins.py
 # @Author: Pen
 # @Date  : 2018-09-14 10:22
-# @Desc  : 检测当前请求是否有权限
+# @Desc  :  view 的mixin 类
 import inspect
 from urllib.parse import urlparse, urlunparse
+
 from django.http import HttpResponse, HttpResponseRedirect, QueryDict
 from django.urls import reverse
+
 from oauth_pen.exceptions import ErrorConfigException
 from oauth_pen.settings import oauth_pen_settings
+from oauth_pen.backends import PenOAuthLibCore
+
+
+class OAuthMixin:
+    """
+    oauth 2.0 的mixin 类
+    """
+    validator_class = None
+
+    def __init__(self):
+        self.oauth2_data = dict()
+
+        self.validator_class = self.validator_class or oauth_pen_settings.OAUTH_VALIDATOR_CLASS
+        if self.validator_class is None:
+            raise ErrorConfigException('请配置OAUTH_VALIDATOR_CLASS或给validator_class赋值')
+
+        self.backend = PenOAuthLibCore(self.validator_class())
+
+    def error_response(self, error, **kwargs):
+        """
+
+        :param error:
+        :param kwargs:
+        :return:
+        """
+        oauth_error = error.oauth_error
+
+        redirect_uri = oauth_error.redirect_uri or ""
+        separator = '&' if '?' in redirect_uri else '?'
+
+        error_response = {
+            'error': oauth_error,
+            'url': "{0}{1}{2}".format(redirect_uri, separator, oauth_error.urlencoded)
+        }
+        error_response.update(kwargs)
+
+        return True, error_response
+
+        # TODO
+        # if isinstance(error, FatalClientError):
+        #     redirect = False
+        # else:
+        #     redirect = True
+        # return redirect, error_response
 
 
 class AccessMixin:
+    login_url = None  # 登录地址
+    redirect_field_name = None  # 登录成功后，url中代表跳转地址参数的key
+
     def __init__(self):
-        self.login_url = None  # 登录地址
         self.raise_exception = None  # 没有权限的时候抛出的异常获取处理的函数
-        self.redirect_field_name = oauth_pen_settings.REDIRECT_FIELD_NAME  # 登录成功后，url中代表跳转地址参数的key
 
         self.get_login_url()
         self.get_redirect_field_name()
@@ -27,7 +74,7 @@ class AccessMixin:
 
         :return:
         """
-        self.login_url = self.login_url or oauth_pen_settings.LOGIN_URL
+        self.login_url = oauth_pen_settings.LOGIN_URL or self.login_url
 
         if not self.login_url:
             raise ErrorConfigException('请配置LOGIN_URL 或重写get_login_url方法')

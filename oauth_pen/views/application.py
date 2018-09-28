@@ -6,14 +6,14 @@
 # @Desc  : application 管理页面
 # from braces.views import LoginRequiredMixin
 from django.forms import model_to_dict
-from django.http import HttpResponse, JsonResponse, HttpResponseRedirect
+from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render
 from django.urls import reverse
 from django.views import View
 
 from oauth_pen import models
-from oauth_pen.access import SuperUserRequiredMixin
 from oauth_pen.settings import oauth_pen_settings
+from oauth_pen.views.mixins import SuperUserRequiredMixin
 
 
 class Application(SuperUserRequiredMixin, View):

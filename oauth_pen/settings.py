@@ -17,21 +17,19 @@ DEFAULTS = {
     'REDIRECT_FIELD_NAME': 'next',  # 登录成功后，url中代表跳转地址参数的key
     'ADMIN_NAME': 'Pen',  # 平台管理员帐号
     'ADMIN_PASSWORD': 'Pen',  # 平台管理员密码
-
+    'LOGIN_URL': '',  # 请填写完整的路由，如果为空表示使用系统默认登录界面
     'AUTH_USER_MODEL': 'oauth_pen.models.User',  # 用户信息
     'AUTHORIZATION_CODE_EXPIRE_SECONDS': 60,  # Code 过期时间 单位 秒
     'ACCESS_TOKEN_EXPIRE_SECONDS': 36000,  # token 过期时间 单位 秒
     'ROTATE_REFRESH_TOKEN': True,  # 刷新token成功后 refresh_token是否变更
 
-    'OAUTH_SERVER_CLASS': '',  # TODO
-    'OAUTH_VALIDATOR_CLASS': ''
+    'OAUTH_VALIDATOR_CLASS': ''  # TODO
 }
 
 # 如果以下配置是字符串的形式，则进行反射处理
 IMPORT_STRINGS = [
     'APPLICATION_MODEL',
     'AUTH_USER_MODEL',
-    'OAUTH_SERVER_CLASS',
     'OAUTH_VALIDATOR_CLASS',
     'AUTHENTICATION_BACKEND'
 ]
@@ -78,7 +76,7 @@ class OAuthPenSetting:
             return getattr(modules, class_name)
 
         except Exception as e:
-            raise exceptions.ErrorConfigException('APPLICATION_MODEL 配置无效', e)
+            raise exceptions.ErrorConfigException(item + ' 配置无效', e)
 
 
 oauth_pen_settings = OAuthPenSetting(USER_SETTINGS, DEFAULTS)
