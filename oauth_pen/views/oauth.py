@@ -4,7 +4,7 @@
 # @Author: Pen
 # @Date  : 2018-09-19 15:08
 # @Desc  : Token 的相关视图
-from braces.views import CsrfExemptMixin
+# from braces.views import CsrfExemptMixin
 from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
 from django.utils import timezone
@@ -15,7 +15,7 @@ from oauth_pen.models import get_application_model
 from oauth_pen.views.mixins import OAuthMixin, LoginRequiredMixin
 
 
-class TokenView(CsrfExemptMixin, OAuthMixin):
+class TokenView(OAuthMixin):
     """
     生产token (Authorization code/Password/Client credentials)
     """
@@ -38,7 +38,7 @@ class TokenView(CsrfExemptMixin, OAuthMixin):
         return response
 
 
-class RevokeTokenView(CsrfExemptMixin, OAuthMixin):
+class RevokeTokenView(OAuthMixin):
     """
     销毁token
     """
@@ -66,7 +66,9 @@ class AuthorizationView(LoginRequiredMixin, OAuthMixin, FormView):
     """
     template_name = 'oauth/allow.html'
     form_class = AllowForm
-    login_url = reverse('')
+
+    def get_login_url(self):
+        return reverse('admin:auth_login')  # TODO 为什么不能直接在类里写login_url=reverse('admin:auth_login')
 
     def get_initial(self):
         initial_data = {
@@ -144,4 +146,3 @@ class AuthorizationLoginView(FormView):
     def get(self, request, *args, **kwargs):
         pass
         # TODO 用户登录逻辑
-
