@@ -29,7 +29,7 @@ class ApiApplicationList(SuperUserRequiredMixin, View):
         获取客户端列表
         :return:
         """
-        data = oauth_pen_settings.APPLICATION_MODEL.objects.all()
+        data = models.get_application_model().objects.all()
         result = []
         for d in data:
             result.append({
@@ -55,12 +55,12 @@ class ApiApplication(SuperUserRequiredMixin, View):
         """
         client_id = self.request.GET.get('client_id', None)
 
-        data = oauth_pen_settings.APPLICATION_MODEL.objects.filter(client_id=client_id).first()
+        data = models.get_application_model().objects.filter(client_id=client_id).first()
         if data:
             data = model_to_dict(data)
         else:
-            data = oauth_pen_settings.APPLICATION_MODEL()
-            data = model_to_dict(data)
+            application_class = models.get_application_model()
+            data = model_to_dict(application_class())
 
         return JsonResponse(data)
 
@@ -69,6 +69,8 @@ class ApiApplication(SuperUserRequiredMixin, View):
         修改/添加客户端信息
         :return:
         """
+        application_class = models.get_application_model()
+
         user_id = 0  # request.user.pk
         client_name = self.request.POST.get('client_name', None)
         client_id = self.request.POST.get('client_id', None)
@@ -87,9 +89,9 @@ class ApiApplication(SuperUserRequiredMixin, View):
                 models.Application.GRANT_IMPLICIT, models.Application.GRANT_AUTHORIZATION_CODE) and not redirect_uris:
             return HttpResponse('{} 模式下,回调地址必填'.format(authorization_grant_type), status=400)
 
-        data = oauth_pen_settings.APPLICATION_MODEL.objects.filter(client_id=client_id).first()
+        data = application_class.objects.filter(client_id=client_id).first()
         if not data:
-            data = oauth_pen_settings.APPLICATION_MODEL()
+            data = application_class()
 
         data.client_id = client_id
         data.client_secret = client_secret
@@ -111,7 +113,7 @@ class ApiApplication(SuperUserRequiredMixin, View):
         :return:
         """
         client_id = self.request.GET.get('client_id', None)
-        data = oauth_pen_settings.APPLICATION_MODEL.objects.filter(client_id=client_id).first()
+        data = models.get_application_model().objects.filter(client_id=client_id).first()
         if data:
             data.delete()
 

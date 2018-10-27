@@ -80,7 +80,7 @@ function bind_app_detail(layer, form, client_id) {
     layer.open({
         type: 1,
         title: '客户端详情',
-        area: ['680px', '400px'],
+        area: ['600px', '500px'],
         content: $detail
     });
 

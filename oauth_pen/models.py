@@ -146,8 +146,8 @@ class Application(ApplicationAbstract):
 
 
 class AccessToken(models.Model):
-    # user = models.ForeignKey(oauth_pen_settings.AUTH_USER_MODEL, blank=True, null=True, on_delete=models.CASCADE)
-    # application = models.ForeignKey(oauth_pen_settings.APPLICATION_MODEL, on_delete=models.CASCADE)
+    user = models.ForeignKey(oauth_pen_settings.AUTH_USER_MODEL, blank=True, null=True, on_delete=models.CASCADE)
+    application = models.ForeignKey(oauth_pen_settings.APPLICATION_MODEL, on_delete=models.CASCADE)
     token = models.CharField(max_length=255, unique=True)
     expires = models.DateTimeField('')
 
