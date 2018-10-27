@@ -135,7 +135,7 @@ class LoginRequiredMixin(AccessMixin):
     """
 
     def dispatch(self, request, *args, **kwargs):
-        if not request.user.is_authenticated():
+        if not request.user.is_authenticated:
             return self.handle_no_permission(request)
 
         return super(LoginRequiredMixin, self).dispatch(request, *args, **kwargs)
