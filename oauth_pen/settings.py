@@ -23,7 +23,7 @@ DEFAULTS = {
     'ACCESS_TOKEN_EXPIRE_SECONDS': 36000,  # token 过期时间 单位 秒
     'ROTATE_REFRESH_TOKEN': True,  # 刷新token成功后 refresh_token是否变更
 
-    'OAUTH_VALIDATOR_CLASS': ''  # TODO
+    'OAUTH_VALIDATOR_CLASS': 'oauth_pen.oauth.OAuthValidator'  # OAuth2.0的相关实现逻辑
 }
 
 # 如果以下配置是字符串的形式，则进行反射处理

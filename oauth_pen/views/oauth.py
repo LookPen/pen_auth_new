@@ -52,7 +52,7 @@ class RevokeTokenView(OAuthMixin):
         return response
 
 
-class AuthorizationView(LoginRequiredMixin, OAuthMixin, FormView):
+class AuthorizationView(OAuthMixin, LoginRequiredMixin, FormView):
     """
     Authorization code /Implicit grant 模式下触发
 
@@ -66,9 +66,6 @@ class AuthorizationView(LoginRequiredMixin, OAuthMixin, FormView):
     """
     template_name = 'oauth/allow.html'
     form_class = AllowForm
-
-    def get_login_url(self):
-        return reverse('admin:auth_login')  # TODO 为什么不能直接在类里写login_url=reverse('admin:auth_login')
 
     def get_initial(self):
         initial_data = {
@@ -144,5 +141,5 @@ class AuthorizationLoginView(FormView):
     template_name = 'oauth/login.html'
 
     def get(self, request, *args, **kwargs):
-        pass
+        return self.render_to_response({})
         # TODO 用户登录逻辑

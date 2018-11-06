@@ -305,7 +305,7 @@ class SuperUser(UserAbstract):
 
     @property
     def logout_path(self):
-        return reverse('pen_admin:logout', current_app='oauth_pen')
+        return reverse('pen_admin:logout')
 
 
 def get_application_model():

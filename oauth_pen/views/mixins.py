@@ -17,7 +17,7 @@ from oauth_pen.backends import PenOAuthLibCore
 
 class OAuthMixin:
     """
-    oauth 2.0 的mixin 类
+    oauth 2.0 的mixin 类 (继承时放最左边)
     """
     validator_class = None
 
@@ -65,8 +65,8 @@ class AccessMixin:
     def __init__(self):
         self.raise_exception = None  # 没有权限的时候抛出的异常获取处理的函数
 
-        self.get_login_url()
-        self.get_redirect_field_name()
+        self.login_url = self.get_login_url()
+        self.redirect_field_name = self.get_redirect_field_name()
 
     def get_login_url(self):
         """
@@ -133,6 +133,15 @@ class LoginRequiredMixin(AccessMixin):
     view 的mixin类 当前请求必须登录后才能操作
 
     """
+    def get_login_url(self):
+        """
+        获取登录地址
+
+        :return:
+        """
+        self.login_url = reverse('pen_admin:auth_login')
+
+        return self.login_url
 
     def dispatch(self, request, *args, **kwargs):
         if not request.user.is_authenticated:
@@ -152,7 +161,7 @@ class SuperUserRequiredMixin(AccessMixin):
 
         :return:
         """
-        self.login_url = reverse('pen_admin:login', current_app='oauth_pen')
+        self.login_url = reverse('pen_admin:login')
 
         return self.login_url
 

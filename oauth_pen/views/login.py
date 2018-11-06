@@ -21,9 +21,8 @@ class SuperLoginView(generic.FormView):
     def __init__(self):
         super(SuperLoginView, self).__init__()
         self.template_name = 'admin/login.html'
-        self.app_name = 'oauth_pen'
-        self.index_url = reverse('pen_admin:index', current_app=self.app_name)
-        self.login_url = reverse('pen_admin:login', current_app=self.app_name)
+        self.index_url = reverse('pen_admin:index')
+        self.login_url = reverse('pen_admin:login')
 
         self.form_class = SuperLoginForm
         self.redirect_field_name = oauth_pen_settings.REDIRECT_FIELD_NAME
@@ -79,8 +78,7 @@ class SuperLogOutView(generic.View):
 
     def __init__(self):
         super(SuperLogOutView, self).__init__()
-        self.app_name = 'oauth_pen'
-        self.login_url = reverse('pen_admin:login', current_app=self.app_name)
+        self.login_url = reverse('pen_admin:login')
 
     def dispatch(self, request, *args, **kwargs):
         AuthLibCore(self.request).logout()
